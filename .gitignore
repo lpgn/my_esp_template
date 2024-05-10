@@ -4,3 +4,4 @@
 .vscode/launch.json
 .vscode/ipch
 firmware/.vscode/extensions.json
+firmware/src/data/credentials.txt
