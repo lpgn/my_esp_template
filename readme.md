@@ -25,7 +25,18 @@ cd my_esp_template
 After cloning the repository, you can open the project in your preferred IDE or editor that supports PlatformIO.
 
 ## Configuring Your WiFi
-Edit the credentials.txt file in the data directory to include your specific WiFi settings.
+
+create a file named credentials.txt in the data directory
+Edit the credentials.txt file to include your specific WiFi settings in the following format
+
+```
+YourNetworkName_1,YourNetworkPassword
+YourNetworkName_2,YourNetworkPassword
+YourNetworkName_3,YourNetworkPassword
+YourNetworkName_4,YourNetworkPassword
+YourNetworkName_5,YourNetworkPassword
+YourNetworkName_6,YourNetworkPassword
+```
 
 ## Real Time Clock (RTC)
 Ensure that your hardware setup corresponds to the pin configurations specified in the TimeHandler.cpp file.
