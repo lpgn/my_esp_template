@@ -1,6 +1,3 @@
-#ifndef BOARD_CONFIG_H
-#define BOARD_CONFIG_H
-
 /**
  * @file Board_Config.h
  * @brief Configuration settings specific to the hardware board.
@@ -8,6 +5,9 @@
  * This file contains settings and initializations specific to the hardware board used in the project,
  * such as pin configurations, specific hardware feature settings, and board-specific constants.
  */
+
+#ifndef BOARD_CONFIG_H
+#define BOARD_CONFIG_H
 
 #include "Config.h"
 

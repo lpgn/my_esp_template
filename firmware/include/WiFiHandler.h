@@ -1,6 +1,3 @@
-#ifndef WIFIHANDLER_H
-#define WIFIHANDLER_H
-
 /**
  * @file WiFiHandler.h
  * @brief Interface for WiFi connectivity.
@@ -8,6 +5,9 @@
  * Declares the WiFiHandler class for managing WiFi connections. This includes methods
  * for connecting to networks, handling disconnections, and maintaining WiFi stability.
  */
+
+#ifndef WIFIHANDLER_H
+#define WIFIHANDLER_H
 
 #include "Config.h"
 

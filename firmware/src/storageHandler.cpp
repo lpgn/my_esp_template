@@ -1,5 +1,3 @@
-#include "storageHandler.h"
-
 /**
  * @file storageHandler.cpp
  * @brief Implements storage management functions.
@@ -7,6 +5,8 @@
  * Implements methods of the StorageHandler class. These methods manage all interactions with
  * the device's non-volatile storage, providing functionality to save and load configurations.
  */
+
+#include "storageHandler.h"
 
 bool writeFile(String path, String data)
 {

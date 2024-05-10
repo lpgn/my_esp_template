@@ -1,6 +1,3 @@
-#ifndef CONFIG_H
-#define CONFIG_H
-
 /**
  * @file Config.h
  * @brief Project-wide configuration parameters.
@@ -9,10 +6,13 @@
  * server settings, and operational thresholds. Modify these parameters to customize project behavior.
  */
 
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #include <Arduino.h>
 #include <FS.h>
 #include <LittleFS.h>
-#include <AsyncJson.h>
+//#include <AsyncJson.h>
 
 #include <ESP32Time.h>
 #include <WiFi.h>
@@ -22,6 +22,8 @@
 #include <ThreeWire.h>
 #include <RtcDS1302.h>
 #include <ElegantOTA.h>
+#include <ESPAsyncWebServer.h>
+
 
 //include all files here
 #include "Board_Config.h"

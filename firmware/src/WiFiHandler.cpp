@@ -1,5 +1,3 @@
-#include "WiFiHandler.h"
-
 /**
  * @file WiFiHandler.cpp
  * @brief Implementation of WiFi management functions.
@@ -7,6 +5,8 @@
  * Provides detailed implementation of the WiFiHandler class methods, including the logic
  * to connect, disconnect, and handle WiFi events.
  */
+
+#include "WiFiHandler.h"
 
 void printAccessPointIP()
 {

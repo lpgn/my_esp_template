@@ -1,5 +1,3 @@
-#include "Board_Config.h"
-
 /**
  * @file Board_Config.cpp
  * @brief Implementation of board configuration functions.
@@ -9,6 +7,9 @@
  */
 
 // Define configuration settings for different boards
+
+#include "Board_Config.h"
+
 const BoardConfig configs[] = {
     {
         "proto_nuts",     // Board name
