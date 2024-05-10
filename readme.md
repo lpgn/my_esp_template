@@ -18,6 +18,7 @@ To clone this repository and use it in your projects, follow these steps:
 ```bash
 git clone https://github.com/lpgn/my_esp_template.git
 cd my_esp_template
+```
 
 ## Usage
 After cloning the repository, you can open the project in your preferred IDE or editor that supports ESP8266/ESP32 development (like PlatformIO or the Arduino IDE).
