@@ -21,7 +21,7 @@ Kickstart your ESP32 projects with this Arduino-based template. It's designed fo
 
 ### Configure WiFi
 
-1. Create a `data` directory within your project.
+1. Create a `data/credentials.txt` file within your project.
 2. Add your WiFi credentials to `data/credentials.txt`:
 ```
 YourNetworkName_1,YourNetworkPassword
