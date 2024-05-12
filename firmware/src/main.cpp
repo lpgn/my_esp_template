@@ -21,7 +21,8 @@ void setup() {
     initializeServer();
     serverHandle();
     moveStepper();
-
+    stepperToggle(); // Check and toggle direction as needed
+    stepper.run();   // Regularly update the stepper's operation
 }
 
 void loop() {

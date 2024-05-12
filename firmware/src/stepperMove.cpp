@@ -6,19 +6,29 @@ bool toggleStepper = false; // Global flag for toggling stepper direction
 bool toggleDirection = false;  // This will keep track of the direction internally
 
 void moveStepper() {
-    stepper.setMaxSpeed(5000.0);
+    stepper.setMaxSpeed(100000.0);
     stepper.setAcceleration(2000.0);
-    stepper.moveTo(600000);
+    stepper.moveTo(0);
     stepper.runToPosition();
 }
 
 void stepperToggle() {
     if (toggleDirection) {
-        stepper.setSpeed(stepper.speed() * -1); // Reverse the speed to change direction
+        long currentPosition = stepper.currentPosition();
+        // Toggle the target position to the opposite side of the current position
+        if (currentPosition == 0) {
+            stepper.moveTo(1000);  // Example position, adjust based on your use case
+        } else {
+            stepper.moveTo(-currentPosition);
+        }
         toggleDirection = false;  // Reset the toggle flag
+        Serial.print("Current Position: "); Serial.println(currentPosition);
+        Serial.print("Moving to Position: "); Serial.println(currentPosition > 0 ? -currentPosition : 1000);
     }
-    stepper.runSpeed();  // This needs to be called regularly to make the motor move
+    stepper.run();  // Regularly call this to update stepper position and handle direction changes
+
 }
+
 
 void handleToggleStepper(AsyncWebServerRequest *request) {
     toggleDirection = true;  // This will toggle the motor direction on the next check in stepperToggle()
