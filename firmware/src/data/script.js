@@ -3,7 +3,7 @@ let direction = false;  // false for one direction, true for the other
 document.getElementById('toggle').addEventListener('click', function() {
     fetch('/toggleStepper', { method: 'POST' }) // Changed endpoint to toggleStepper
     .then(response => response.text())
-    .then(data => alert('Stepper direction will be toggled. Server says: ' + data))
+    .then(data => alert('Server says: ' + data))
     .catch(error => console.error('Error toggling stepper direction:', error));
 });
 
@@ -23,6 +23,14 @@ document.getElementById('stepper-acceleration').addEventListener('change', funct
     .then(response => response.text())
     .then(data => console.log('Acceleration set to:', acceleration))
     .catch(error => console.error('Error setting acceleration:', error));
+});
+
+document.getElementById('stepper-speed').addEventListener('change', function() {
+    const speed = this.value;
+    fetch(`/setSpeed?value=${speed}`, { method: 'POST' })
+    .then(response => response.text())
+    .then(data => console.log('Speed set to:', speed))
+    .catch(error => console.error('Error setting speed:', error));
 });
 
 document.getElementById('steps-per-mm').addEventListener('change', function() {

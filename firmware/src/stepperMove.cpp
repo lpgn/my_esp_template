@@ -6,19 +6,18 @@ bool toggleStepper = false; // Global flag for toggling stepper direction
 bool toggleDirection = false;  // This will keep track of the direction internally
 
 void moveStepper() {
-    stepper.setMaxSpeed(1000.0);
-    stepper.setAcceleration(200.0);
-    stepper.moveTo(60000);
+    stepper.setMaxSpeed(5000.0);
+    stepper.setAcceleration(2000.0);
+    stepper.moveTo(600000);
     stepper.runToPosition();
 }
 
 void stepperToggle() {
     if (toggleDirection) {
-        long currentPosition = stepper.currentPosition();  // Get the current position
-        stepper.moveTo(-currentPosition);  // Set the target position to the negative of the current position to reverse direction
+        stepper.setSpeed(stepper.speed() * -1); // Reverse the speed to change direction
         toggleDirection = false;  // Reset the toggle flag
     }
-    stepper.run();  // This needs to be called regularly to make the motor move
+    stepper.runSpeed();  // This needs to be called regularly to make the motor move
 }
 
 void handleToggleStepper(AsyncWebServerRequest *request) {
@@ -31,8 +30,7 @@ void handleMoveStepper(AsyncWebServerRequest *request) {
     if (request->hasParam("position")) {
         int position = request->getParam("position")->value().toInt();
         stepper.moveTo(position);
-        stepper.runToPosition();
-        Serial.println("Received moveStepper command: Moving to position " + String(position));
+        stepper.runToPosition(); // This blocks until the position is reached, consider using stepper.run() in loop for non-blocking behavior
         request->send(200, "text/plain", "Stepper moved to position: " + String(position));
     } else {
         request->send(400, "text/plain", "Position parameter is missing");
@@ -42,12 +40,23 @@ void handleMoveStepper(AsyncWebServerRequest *request) {
 // Function to handle setting the acceleration of the stepper
 void handleSetAcceleration(AsyncWebServerRequest *request) {
     if (request->hasParam("value")) {
-        int acceleration = request->getParam("value")->value().toInt();
+        float acceleration = request->getParam("value")->value().toFloat();
         stepper.setAcceleration(acceleration);
-        Serial.println("Received setAcceleration command: Setting acceleration to " + String(acceleration));
         request->send(200, "text/plain", "Acceleration set to: " + String(acceleration));
     } else {
         request->send(400, "text/plain", "Acceleration parameter is missing");
+    }
+}
+
+
+// Function to handle setting the acceleration of the stepper
+void handleSetSpeed(AsyncWebServerRequest *request) {
+    if (request->hasParam("value")) {
+        float speed = request->getParam("value")->value().toFloat();
+        stepper.setMaxSpeed(speed);
+        request->send(200, "text/plain", "Speed set to: " + String(speed));
+    } else {
+        request->send(400, "text/plain", "Speed parameter is missing");
     }
 }
 

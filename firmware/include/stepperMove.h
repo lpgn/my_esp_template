@@ -8,6 +8,7 @@ void moveStepper();
 void stepperToggle();
 void handleMoveStepper(AsyncWebServerRequest *request);
 void handleSetAcceleration(AsyncWebServerRequest *request);
+void handleSetSpeed(AsyncWebServerRequest *request);
 void handleSetStepsPerMM(AsyncWebServerRequest *request);
 void handleToggleStepper(AsyncWebServerRequest *request);
 

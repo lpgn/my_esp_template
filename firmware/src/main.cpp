@@ -21,8 +21,9 @@ void setup() {
     initializeServer();
     serverHandle();
     moveStepper();
+
 }
 
 void loop() {
-
+    stepper.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
 }
