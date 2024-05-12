@@ -1,12 +1,5 @@
 let direction = false;  // false for one direction, true for the other
 
-// document.getElementById('toggle').addEventListener('click', function() {
-//     fetch('/toggleStepper', { method: 'POST' }) // Changed endpoint to toggleStepper
-//     .then(response => response.text())
-//     .then(data => alert('Server says: ' + data))
-//     .catch(error => console.error('Error toggling stepper direction:', error));
-// });
-
 // Event listener for stepper motor position slider
 document.getElementById('stepper-position').addEventListener('input', function() {
     const position = this.value;
