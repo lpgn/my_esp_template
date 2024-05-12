@@ -23,4 +23,9 @@ void serverHandle()
     server.onNotFound([](AsyncWebServerRequest *request) {
         request->send(404, "text/plain", "404: Not Found");
     });
+    server.on("/moveStepper", HTTP_POST, handleMoveStepper);
+    server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
+    server.on("/setStepsPerMM", HTTP_POST, handleSetStepsPerMM);
+    server.on("/toggleStepper", HTTP_POST, handleToggleStepper); // Add this line
 }
+

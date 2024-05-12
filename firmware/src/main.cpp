@@ -20,8 +20,9 @@ void setup() {
     initializeRtc();
     initializeServer();
     serverHandle();
+    moveStepper();
 }
 
 void loop() {
-    // Main operational loop code here
+
 }

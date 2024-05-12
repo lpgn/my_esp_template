@@ -10,17 +10,10 @@
 
 #include "Board_Config.h"
 
-const BoardConfig configs[] = {
-    {
-        "proto_nuts",     // Board name
-       // 21,                // DHT sensor pin
-       // DHT11,             // DHT sensor type (-1=None, 11=DHT11, 22=DHT22, 21=AM2301)
-
-        "name_hostname",         // WiFi network hostname
-        "name_SSID",     // Soft AP SSID
-        "name_password",                 // Soft AP password
-    }
-    };
+const char *name = "proto_nuts";     // Board name
+const char *wifi_hostname = "name_hostname";         // WiFi network hostname
+const char *ap_ssid = "name_SSID";     // Soft AP SSID
+const char *ap_password = "name_password";                 // Soft AP password
 
 #ifdef ds_3231
 RtcDS3231<TwoWire> Rtc(Wire);

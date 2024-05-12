@@ -11,18 +11,11 @@
 
 #include "Config.h"
 
-struct BoardConfig
-{
-  const char *name;
-  
-  //int dht_pin;
-  //int dht_type;
+extern const char *name;
+extern const char *wifi_hostname;
+extern const char *ap_ssid;
+extern const char *ap_password;
 
-  const char *wifi_hostname;
-  const char *ap_ssid;
-  const char *ap_password;
-
-};
 
 #define ds_3231
 
@@ -35,8 +28,5 @@ extern int sclPin;
 extern ThreeWire myWire;
 extern RtcDS1302<ThreeWire> Rtc;
 #endif
-
-
-extern const BoardConfig configs[];
 
 #endif
