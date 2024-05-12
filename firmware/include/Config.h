@@ -24,15 +24,16 @@
 #include <AccelStepper.h>
 
 //include all files here
-#include "Board_Config.h"
 #include "WebServerManager.h"
 #include "WiFiHandler.h"
 #include "storageHandler.h"
 #include "TimeHandler.h"
 #include "stepperMove.h"
 
-extern WiFiMulti wifiMulti;
+extern ESP32Time rtc;
 
+extern WiFiMulti wifiMulti;
+extern AsyncWebServer server;
 
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;
@@ -41,9 +42,16 @@ extern const char *soft_ap_password;
 // Define some steppers and the pins the will use
 extern AccelStepper stepper;
 
-#define countof(a) (sizeof(a) / sizeof(a[0]))
+#define ds_3231
 
-extern ESP32Time rtc;
-extern AsyncWebServer server;
+#ifdef ds_3231
+extern RtcDS3231<TwoWire> Rtc;
+extern int sdaPin;
+extern int sclPin;
+#endif
+#ifdef ds_1302
+extern ThreeWire myWire;
+extern RtcDS1302<ThreeWire> Rtc;
+#endif
 
 #endif // CONFIG_H

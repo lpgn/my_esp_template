@@ -9,8 +9,6 @@
 #include "Config.h"
 
 void setup() {
-    // Initialization code here
-
     Serial.begin(115200);
     setupStorage();
     configureWiFiSettings();
@@ -20,9 +18,7 @@ void setup() {
     initializeRtc();
     initializeServer();
     serverHandle();
-    moveStepper();
-    stepperToggle(); // Check and toggle direction as needed
-    stepper.run();   // Regularly update the stepper's operation
+    initializeStepper();
 }
 
 void loop() {
