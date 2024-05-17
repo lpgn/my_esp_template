@@ -3,7 +3,7 @@
 #include <Wire.h>
 
 // Function declarations
-void setupFedeer();
+void setupFeeder();
 void calibrateReservoir();
 void initializeRTC();
 void loadFeedingSchedule();
@@ -33,7 +33,7 @@ void setup() {
     Wire.onReceive(receiveEvent); // Register an event handler for I2C receive events
 
     // Start the system
-    setupFedeer();
+    setupFeeder();
 }
 
 void loop() {
@@ -54,7 +54,7 @@ void receiveEvent(int howMany) {
     validateCatInfo(rfidTag);
 }
 
-void setupFedeer() {
+void setupFeeder() {
     calibrateReservoir();
     loadFeedingSchedule();
     checkFeedingSchedule();
