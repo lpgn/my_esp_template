@@ -31,8 +31,8 @@ This repository contains the code and documentation for an automated cat feeder.
 
 ### Phase 1: Daily Initialization and Calibration
 
-**Event**: Start of Day  
-**Trigger**: ESP32 starts the day (e.g., at midnight).  
+**Event**: Setup Feeder event when turn on  
+**Trigger**: ESP32 starts.  
 **Actions**:
 1. **Calibrate the reservoir position**:
    - Move the reservoir anti-clockwise until it hits the end stop switch.
@@ -53,9 +53,9 @@ This repository contains the code and documentation for an automated cat feeder.
 **Actions**:
 1. **Validate Cat Presence**:
    - Detect cat via RFID Reader.
-   - Validate cat's information.
+   - Validate cat's information by sending the RFID tag to the ESP32.
 2. **Dispense Food**:
-   - Open the door using the Servo Motor. (food was served at scheduled times)
+   - Open the door using the Servo Motor. (the food is already served and waiting for the cat)
    - Log the cat's entry time and RFID tag information.
 
 ## Function List
@@ -63,8 +63,9 @@ This repository contains the code and documentation for an automated cat feeder.
 ### Initialization Functions
 
 ```cpp
+void setupFedeer()
 void calibrateReservoir(); // Calibrates the reservoir position
-void initializeRTC(); // Initializes the RTC
+void initializeRTC(); // Initializes the RTC (runs only once in the setup)
 void loadFeedingSchedule(); // Loads the feeding schedule
 void checkFeedingSchedule(); // Checks the feeding schedule at 9 a.m. and 6 p.m.
 void checkIfAlreadyAte(); // Checks if the cat has already eaten before the second feed of the day
@@ -73,10 +74,10 @@ void checkIfAlreadyAte(); // Checks if the cat has already eaten before the seco
 ### Cat Detection Functions
 
 ```cpp
-void detectCat(); // Detects when a cat is present
-void validateCatInfo(); // Validates the detected cat's information
-void logCatEntry(); // Logs the cat's entry time and RFID tag information
+void validateCatInfo(String rfidTag); // Validates the detected cat's information
+void logCatEntry(String rfidTag); // Logs the cat's entry time and RFID tag information
 void openDoor(); // Sends command to Tiny1614 to open the door
+void receiveEvent(int howMany); // Receives RFID tag data from Tiny1614
 ```
 
 ### Feeding Mechanism Functions
@@ -85,6 +86,7 @@ void openDoor(); // Sends command to Tiny1614 to open the door
 void determineFoodAmount(); // Determines the required amount of food
 void rotateReservoir(); // Rotates the reservoir to the correct position
 void rotateFeedScrew(); // Rotates the feed screw to dispense food
+void loadFood(); // Handles the entire feeding process
 ```
 
 ## Installation
@@ -110,7 +112,7 @@ Once the system is set up and the code is uploaded, the automated cat feeder wil
 - Initialize and calibrate the reservoir position at the start of each day.
 - Check the feeding schedule at 9 a.m. and 6 p.m.
 - Detect the presence of the cat using the RFID reader.
-- Open the door to the food bay when the cat is detected.
+- Validate the cat's RFID information and open the door if valid.
 - Dispense the required amount of food based on the feeding schedule.
 
 ## Contributing
