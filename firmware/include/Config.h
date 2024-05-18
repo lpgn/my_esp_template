@@ -21,7 +21,12 @@
 #include "storageHandler.h"
 #include "TimeHandler.h"
 #include "stepperMove.h"
-#include "hanleTemplate.tpp"
+#include "templates.tpp"
+#include "communication.h"
+#include "catDetection.h"
+#include "setupCatFeeder.h"
+#include "feedingMechanism.h"
+
 
 extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;

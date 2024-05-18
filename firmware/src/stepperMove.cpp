@@ -1,5 +1,5 @@
 #include "Config.h"
-#include "hanleTemplate.tpp"
+#include "templates.tpp"
 
 AccelStepper stepper(AccelStepper::DRIVER, 35, 36); // Ensure these are valid pins
 
