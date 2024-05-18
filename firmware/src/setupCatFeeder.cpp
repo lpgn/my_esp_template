@@ -10,10 +10,18 @@ void setupFeeder() {
     loadFeedingSchedule();
     checkFeedingSchedule();
 }
-
+// note to future Bianca: eventually change the homing speed to slower when aproaching 0
 // Function to calibrate the reservoir
 void calibrateReservoir() {
     Serial.println("Calibrating reservoir...");
+    // Move the reservoir anti-clockwise until it hits the endstop
+    while (digitalRead(endstopPin) != LOW) {
+        // Move the reservoir anti-clockwise using the AceelStepeer library
+        reservoirStepper.move(-1);
+        reservoirStepper.runSpeedToPosition(); 
+    }
+    // Set the position of the reservoir to 0
+    reservoirStepper.setCurrentPosition(0);
 }
 
 // Function to load the feeding schedule

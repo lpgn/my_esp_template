@@ -52,4 +52,13 @@ extern ThreeWire myWire;
 extern RtcDS1302<ThreeWire> Rtc;
 #endif
 
+
+extern AccelStepper stepperReservoir;
+extern AccelStepper stepperScrew;
+extern int endstopPin;
+
+extern int module1;
+extern int module2;
+extern int module3;
+
 #endif // CONFIG_H
