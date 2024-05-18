@@ -28,3 +28,17 @@ ThreeWire myWire(14, 13, 32);
 RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
+// Define steppers and the pins they will use
+AccelStepper stepperReservoir(AccelStepper::DRIVER, 35, 36); // Ensure these are valid pins
+AccelStepper stepperScrew(AccelStepper::DRIVER, 32, 31); // Ensure these are valid pins
+// define endstop pin
+int endstopPin = 2;
+
+// variables to define module position in steps since its 800 steps per revolution and there are 3 modules
+// 1st one is in angle 0, second in angle 60 and third in angle 120
+int module1 = 0;
+// module 2 is in angle 60 so it needs to move 800/360*60 = 133.33 steps
+int module2 = 133;
+// module 3 is in angle 120 so it needs to move 800/360*120 = 266.67 steps
+int module3 = 267;
+//if I want to add more modules, follow the same logic 

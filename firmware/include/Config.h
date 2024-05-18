@@ -21,7 +21,12 @@
 #include "storageHandler.h"
 #include "TimeHandler.h"
 #include "stepperMove.h"
-#include "hanleTemplate.tpp"
+#include "templates.tpp"
+#include "communication.h"
+#include "catDetection.h"
+#include "setupCatFeeder.h"
+#include "feedingMechanism.h"
+
 
 extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;
@@ -46,5 +51,14 @@ extern int sclPin;
 extern ThreeWire myWire;
 extern RtcDS1302<ThreeWire> Rtc;
 #endif
+
+
+extern AccelStepper stepperReservoir;
+extern AccelStepper stepperScrew;
+extern int endstopPin;
+
+extern int module1;
+extern int module2;
+extern int module3;
 
 #endif // CONFIG_H

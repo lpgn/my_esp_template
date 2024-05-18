@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP Project Interface</title>
+    <title>Cat Feeder Control Panel</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,19 +12,22 @@
         <h1>Welcome to Our ESP Project</h1>
     </header>
     <section>
-        <h2>Control Panel</h2>
+        <h2>Cat Feeder Control Panel</h2>
         <div>
-            <label for="stepper-position">Stepper Position:</label>
-            <input type="range" id="stepper-position" min="0" max="800" value="0" step="200">
+            <label for="cat-name">Cat Name:</label>
+            <input type="text" id="cat-name" placeholder="Enter cat name">
         </div>
         <div>
-            <label for="stepper-acceleration">Acceleration:</label>
-            <input type="number" id="stepper-acceleration" value="250000">
+            <label for="food-amount">Food Amount (grams):</label>
+            <input type="number" id="food-amount" placeholder="Enter food amount">
         </div>
-        <div>
-            <label for="stepper-speed">Speed:</label>
-            <input type="number" id="stepper-speed" value="200000">
-        </div>
+        <button id="add-cat">Add Cat</button>
+    </section>
+    <section id="cat-list">
+        <h2>Cat List</h2>
+        <ul id="cat-list-items">
+            <!-- Cat items will be added here -->
+        </ul>
     </section>
     <footer>
         <p>Copyright © 2023</p>
