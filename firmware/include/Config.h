@@ -27,7 +27,6 @@
 #include "setupCatFeeder.h"
 #include "feedingMechanism.h"
 
-
 extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;
 extern AsyncWebServer server;
@@ -35,9 +34,6 @@ extern AsyncWebServer server;
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;
 extern const char *soft_ap_password;
-
-// Define steppers and the pins they will use
-extern AccelStepper stepper;
 
 #define ds_3231
 

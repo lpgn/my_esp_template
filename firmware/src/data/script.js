@@ -16,6 +16,9 @@ function sendStepperCommand(url, data, description) {
 function addCat() {
     const catName = document.getElementById('cat-name').value;
     const foodAmount = document.getElementById('food-amount').value;
+    const feedTime = document.getElementById('feeding-time').value;
+    const secondFeedTime = document.getElementById('second-feeding-time').value;
+    const moduleLocation = document.getElementById('module-location').value;
 
     if (!catName || !foodAmount) {
         alert('Please enter both cat name and food amount.');
@@ -23,10 +26,10 @@ function addCat() {
     }
 
     const listItem = document.createElement('li');
-    listItem.textContent = `Cat: ${catName}, Food Amount: ${foodAmount} grams`;
+    listItem.textContent = `Cat: ${catName}, Food Amount: ${foodAmount} grams, First Feeding Time: ${feedTime}, Second Feeding Time: ${secondFeedTime}, Location: ${moduleLocation}`;
     document.getElementById('cat-list-items').appendChild(listItem);
 
-    const data = { catName, foodAmount };
+    const data = { catName, foodAmount, feedTime, secondFeedTime, moduleLocation };
     sendStepperCommand('/setFoodAmount', data, 'Food amount for ' + catName);
 }
 

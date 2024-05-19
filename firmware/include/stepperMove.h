@@ -1,15 +1,16 @@
-// #ifndef STEPPER_MOVE_H
-// #define STEPPER_MOVE_H
+#ifndef STEPPER_MOVE_H
+#define STEPPER_MOVE_H
 
-// #include "Config.h"
+#include "Config.h"
 
-// // Function declarations
-// void handleMoveStepper(AsyncWebServerRequest *request);
-// void handleSetAcceleration(AsyncWebServerRequest *request);
-// void handleSetSpeed(AsyncWebServerRequest *request);
+// Function declarations
+void handleMoveStepper(AsyncWebServerRequest *request);
+void handleSetAcceleration(AsyncWebServerRequest *request);
+void handleSetSpeed(AsyncWebServerRequest *request);
+void handleSetFoodAmount(AsyncWebServerRequest *request);
 
-// // Template function declaration
-// template <typename T>
-// void handleTemplate(AsyncWebServerRequest *request, const char* paramName, void (*setterFunction)(T), const char* successMessage);
+// Template function declaration
+template <typename T>
+void handleTemplate(AsyncWebServerRequest *request, const char* paramName, void (*setterFunction)(T), const char* successMessage);
 
-// #endif
+#endif

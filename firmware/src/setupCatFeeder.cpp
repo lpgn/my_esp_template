@@ -17,11 +17,11 @@ void calibrateReservoir() {
     // Move the reservoir anti-clockwise until it hits the endstop
     while (digitalRead(endstopPin) != LOW) {
         // Move the reservoir anti-clockwise using the AceelStepeer library
-        reservoirStepper.move(-1);
-        reservoirStepper.runSpeedToPosition(); 
+        stepperReservoir.move(-1);
+        stepperReservoir.runSpeedToPosition(); 
     }
     // Set the position of the reservoir to 0
-    reservoirStepper.setCurrentPosition(0);
+    stepperReservoir.setCurrentPosition(0);
 }
 
 // Function to load the feeding schedule

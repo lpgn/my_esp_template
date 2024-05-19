@@ -22,5 +22,6 @@ void serverHandle()
     server.on("/moveStepper", HTTP_POST, handleMoveStepper);
     server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
     server.on("/setSpeed", HTTP_POST, handleSetSpeed);
+    server.on("/setFoodAmount", HTTP_POST, handleSetFoodAmount);
 }
 

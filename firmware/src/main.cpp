@@ -24,7 +24,8 @@ void setup() {
 }
 
 void loop() {
-    stepper.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
+    stepperScrew.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
+    stepperReservoir.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
     // Enter the main loop
     mainLoop();
     //wait passively for RFID read from the Tiny1614
