@@ -53,8 +53,8 @@ extern AccelStepper stepperReservoir;
 extern AccelStepper stepperScrew;
 extern int endstopPin;
 
-extern int module1;
-extern int module2;
-extern int module3;
+extern int foodBay1;
+extern int foodBay2;
+extern int foodBay3;
 
 #endif // CONFIG_H

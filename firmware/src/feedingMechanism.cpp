@@ -39,28 +39,28 @@ int determineFoodAmount(const String& catName, int foodAmount) {
 }
 
 // Function to rotate the reservoir to the correct position
-void rotateReservoir(int module) {
-    // Code to rotate the reservoir based on the module number
-    Serial.print("Rotating reservoir to position for module: ");
-    Serial.println(module);
-    // Add logic to determine the position based on the module number
+void rotateReservoir(int foodBay) {
+    // Code to rotate the reservoir based on the foodBay number
+    Serial.print("Rotating reservoir to position for foodBay: ");
+    Serial.println(foodBay);
+    // Add logic to determine the position based on the foodBay number
     int position = 0;
-    switch (module) {
+    switch (foodBay) {
         case 1:
-            // Code to rotate to position for Module 1
-            position = module1;
+            // Code to rotate to position for foodBay 1
+            position = foodBay1;
             break;
         case 2:
-            // Code to rotate to position for Module 2
-            position = module2;
+            // Code to rotate to position for foodBay 2
+            position = foodBay2;
             break;
         case 3:
-            // Code to rotate to position for Module 3
-            position = module3;
+            // Code to rotate to position for foodBay 3
+            position = foodBay3;
             break;
         default:
-            // Code to handle unknown module number
-            Serial.println("Unknown module number");
+            // Code to handle unknown foodBay number
+            Serial.println("Unknown foodBay number");
             return;
     }
     stepperReservoir.moveTo(position);

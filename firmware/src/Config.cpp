@@ -34,11 +34,11 @@ AccelStepper stepperScrew(AccelStepper::DRIVER, 37, 38); // Ensure these are val
 // define endstop pin
 int endstopPin = 2;
 
-// variables to define module position in steps since its 800 steps per revolution and there are 3 modules
+// variables to define foodBay position in steps since its 800 steps per revolution and there are 3 foodBays
 // 1st one is in angle 0, second in angle 60 and third in angle 120
-int module1 = 0;
-// module 2 is in angle 60 so it needs to move 800/360*60 = 133.33 steps
-int module2 = 133;
-// module 3 is in angle 120 so it needs to move 800/360*120 = 266.67 steps
-int module3 = 267;
-//if I want to add more modules, follow the same logic 
+int foodBay1 = 0;
+// foodBay 2 is in angle 60 so it needs to move 800/360*60 = 133.33 steps
+int foodBay2 = 133;
+// foodBay 3 is in angle 120 so it needs to move 800/360*120 = 266.67 steps
+int foodBay3 = 267;
+//if I want to add more foodBays, follow the same logic 
