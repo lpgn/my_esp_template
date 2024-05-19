@@ -30,7 +30,7 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 
 // Define steppers and the pins they will use
 AccelStepper stepperReservoir(AccelStepper::DRIVER, 35, 36); // Ensure these are valid pins
-AccelStepper stepperScrew(AccelStepper::DRIVER, 32, 31); // Ensure these are valid pins
+AccelStepper stepperScrew(AccelStepper::DRIVER, 37, 38); // Ensure these are valid pins
 // define endstop pin
 int endstopPin = 2;
 
