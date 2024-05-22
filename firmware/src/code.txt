@@ -1,0 +1,25 @@
+{
+    "foodBayModules": [
+        {
+            "catName": "Whiskers",
+            "foodQuantity": 150,
+            "time1": "08:00",
+            "time2": "20:00",
+            "active": true
+        },
+        {
+            "catName": "Paws",
+            "foodQuantity": 120,
+            "time1": "09:00",
+            "time2": "21:00",
+            "active": false
+        },
+        {
+            "catName": "Shadow",
+            "foodQuantity": 100,
+            "time1": "07:00",
+            "time2": "19:00",
+            "active": true
+        }
+    ]
+}

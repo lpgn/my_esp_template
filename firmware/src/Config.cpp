@@ -9,9 +9,9 @@
 #include "Config.h"
 
 ESP32Time rtc;
-
 WiFiMulti wifiMulti;
 AsyncWebServer server(80);
+JsonDocument doc;
 
 const char *wifi_network_hostname = "name_hostname";
 const char *soft_ap_ssid = "name_SSID";

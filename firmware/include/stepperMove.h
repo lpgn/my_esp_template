@@ -7,7 +7,6 @@
 void handleMoveStepper(AsyncWebServerRequest *request);
 void handleSetAcceleration(AsyncWebServerRequest *request);
 void handleSetSpeed(AsyncWebServerRequest *request);
-void handlesetFoodBayData(AsyncWebServerRequest *request);
 
 // Template function declaration
 template <typename T>

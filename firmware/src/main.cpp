@@ -27,6 +27,8 @@ void loop() {
     stepperScrew.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
     stepperReservoir.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
     // Enter the main loop
-    mainLoop();
+    // The ESP32 now waits passively for RFID data from the Tiny1614
+    // Non-blocking delay with callback
+    nonBlockingDelay(600000, checkFeedingSchedule);
     //wait passively for RFID read from the Tiny1614
 }

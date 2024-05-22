@@ -16,16 +16,16 @@ This repository contains the code and documentation for an automated cat feeder.
 ## Hardware Components
 
 1. **Main body (Reservoir and Feed Screw)**
-   - **ESP32**: Central processor that communicates with Food Bay and controls the feeding mechanism via I2C.
-   - **Stepper Motor 1**: Controls rotation of the reservoir.
-   - **Stepper Motor 2**: Controls rotation of the feed screw.
+   - **ESP32**: Central processor that communicates with Food Bays and controls the feeding mechanism via I2C.
+   - **Stepper controler1/Stepper Motor 1**: Controls rotatation of the reservoir.
+   - **Stepper controler2/Stepper Motor 2**: Controls rotation of the feed screw.
    - **End stop**: Indicates the home position of Stepper Motor 1.
    - **RTC**: Keeps track of time.
 
 2. **Module/Food Bay**
+   - **Tiny1614 IC**: Manages local operations and communicates with the ESP32 via I2C.
    - **RFID Reader**: Detects the cat's presence.
    - **Servo Motor**: Opens the door.
-   - **Tiny1614 IC**: Manages local operations and communicates with the ESP32 via I2C.
 
 ## Phases and Steps
 

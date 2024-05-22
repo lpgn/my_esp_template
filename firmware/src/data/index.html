@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Feeder Control Panel</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+        th, td {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -13,38 +23,46 @@
     </header>
     <section>
         <h2>Cat Feeder Control Panel</h2>
-        <div>
-            <label for="cat-name">Cat Name:</label>
-            <input type="text" id="cat-name" placeholder="Enter cat name">
-        </div>
-        <div>
-            <label for="food-amount">Food Amount (grams):</label>
-            <input type="number" id="food-amount" placeholder="Enter food amount">
-        </div>
-        <div>
-            <label for="feeding-time">First Feeding Time:</label>
-            <input type="time" id="feeding-time" placeholder="Enter first feeding time">
-        </div>
-        <div>
-            <label for="second-feeding-time">Second Feeding Time:</label>
-            <input type="time" id="second-feeding-time" placeholder="Enter second feeding time">
-        </div>
-        <div>
-            <label for="foodBay-location">foodBay Location:</label>
-            <select id="foodBay-location">
-                <option value="foodBay 1">1</option>
-                <option value="foodBay 2">2</option>
-                <option value="foodBay 3">3</option>
-            </select>
-        </div>
-        <button id="add-cat">Add Cat</button>
+        <table>
+            <tr>
+                <th>Module</th>
+                <th>Cat Name</th>
+                <th>Food Quantity</th>
+                <th>Time 1</th>
+                <th>Time 2</th>
+                <th>Active</th>
+            </tr>
+            <tr>
+                <td>Module #1</td>
+                <td><input type="text" id="catName1"></td>
+                <td><input type="number" id="foodQuantity1"></td>
+                <td><input type="time" id="time11"></td>
+                <td><input type="time" id="time12"></td>
+                <td><input type="checkbox" id="active1"></td>
+            </tr>
+            <tr>
+                <td>Module #2</td>
+                <td><input type="text" id="catName2"></td>
+                <td><input type="number" id="foodQuantity2"></td>
+                <td><input type="time" id="time21"></td>
+                <td><input type="time" id="time22"></td>
+                <td><input type="checkbox" id="active2"></td>
+            </tr>
+            <tr>
+                <td>Module #3</td>
+                <td><input type="text" id="catName3"></td>
+                <td><input type="number" id="foodQuantity3"></td>
+                <td><input type="time" id="time31"></td>
+                <td><input type="time" id="time32"></td>
+                <td><input type="checkbox" id="active3"></td>
+            </tr>
+        </table>
+        <button onclick="sendData()">Send Data</button>
     </section>
-    <section id="cat-list">
-        <h2>Cat List</h2>
-        <ul id="cat-list-items">
-            <!-- Cat items will be added here -->
-        </ul>
-    </section>
+    <aside>
+        <h2>Instructions</h2>
+        <p>Fill in the form and click the "Send Data" button to send the data to the ESP32.</p>
+    </aside>      
     <footer>
         <p>Copyright © 2023</p>
     </footer>

@@ -17,4 +17,14 @@ void handleTemplate(AsyncWebServerRequest *request, const char* paramName,
     }
 }
 
+template<typename Callback>
+void nonBlockingDelay(unsigned long interval, Callback callback) {
+    unsigned long lastMillis = 0;
+    unsigned long currentMillis = millis();
+    if (currentMillis - lastMillis >= interval) {
+        lastMillis = currentMillis;
+        callback();
+    }
+}
+
 #endif

@@ -43,14 +43,3 @@ void checkIfAlreadyAte() {
     //    loadFood();
     //}
 }
-
-void mainLoop() {
-    while (true) {
-        // The ESP32 now waits passively for RFID data from the Tiny1614
-        checkFeedingSchedule();
-        // Add delay to avoid busy-waiting
-        delay(1000);
-    }
-}
-
-

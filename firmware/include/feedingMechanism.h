@@ -8,5 +8,6 @@ int determineFoodAmount(const String& catName, int foodAmount); // Determines th
 void rotateReservoir(int foodBay); // Rotates the reservoir to the correct
 void rotateFeedScrew(int stepsMotor2); // Rotates the feed screw to dispense food
 void loadFood();        // Handles the entire feeding process
+void myCallback();      // Callback function for non-blocking delay
 
 #endif // FEEINGMECHANISM_H

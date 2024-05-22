@@ -1,0 +1,30 @@
+// Stream& output;
+
+JsonDocument doc;
+
+JsonArray foodBayModules = doc["foodBayModules"].to<JsonArray>();
+
+JsonObject foodBayModules_0 = foodBayModules.add<JsonObject>();
+foodBayModules_0["catName"] = "Whiskers";
+foodBayModules_0["foodQuantity"] = 150;
+foodBayModules_0["time1"] = "08:00";
+foodBayModules_0["time2"] = "20:00";
+foodBayModules_0["active"] = true;
+
+JsonObject foodBayModules_1 = foodBayModules.add<JsonObject>();
+foodBayModules_1["catName"] = "Paws";
+foodBayModules_1["foodQuantity"] = 120;
+foodBayModules_1["time1"] = "09:00";
+foodBayModules_1["time2"] = "21:00";
+foodBayModules_1["active"] = false;
+
+JsonObject foodBayModules_2 = foodBayModules.add<JsonObject>();
+foodBayModules_2["catName"] = "Shadow";
+foodBayModules_2["foodQuantity"] = 100;
+foodBayModules_2["time1"] = "07:00";
+foodBayModules_2["time2"] = "19:00";
+foodBayModules_2["active"] = true;
+
+doc.shrinkToFit();  // optional
+
+serializeJson(doc, output);

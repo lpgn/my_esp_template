@@ -15,8 +15,3 @@ void handleSetAcceleration(AsyncWebServerRequest *request) {
 void handleSetSpeed(AsyncWebServerRequest *request) {
     handleTemplate<float>(request, "value", [](float speed) { stepperReservoir.setMaxSpeed(speed); }, "Speed set to");
 }
-
-// Function to handle setting the food amount
-void handlesetFoodBayData(AsyncWebServerRequest *request) {
-    handleTemplate<int>(request, "value", [](int foodAmount) { foodAmount * 10; }, "Food amount set to");
-}

@@ -9,6 +9,5 @@ void calibrateReservoir(); // Calibrate the reservoir position
 void loadFeedingSchedule(); // Load the feeding schedule
 void checkFeedingSchedule(); // Check the feeding schedule
 void checkIfAlreadyAte(); // Check if the cat has already eaten
-void mainLoop();
 
 #endif // SETUP_CAT_FEEDER_H

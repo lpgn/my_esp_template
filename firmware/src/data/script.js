@@ -1,86 +1,72 @@
-// Function to handle fetch requests and logging
-function sendCommand(url, data, description) {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.text())
-    .then(data => console.log(`${description} set to:`, data))
-    .catch(error => console.error(`Error setting ${description}:`, error));
-}
+document.addEventListener("DOMContentLoaded", function() {
 
-// Event listener for stepper motor position slider
-document.getElementById('stepper-position').addEventListener('input', function() {
-    const position = this.value;
-    sendCommand(`/moveStepper?position=${position}`, position, 'Stepper position');
-});
-
-// Event listener for stepper settings
-document.getElementById('stepper-acceleration').addEventListener('change', function() {
-    const acceleration = this.value;
-    sendCommand(`/setAcceleration?value=${acceleration}`, acceleration, 'Acceleration');
-});
-
-
-document.getElementById('stepper-speed').addEventListener('change', function() {
-    const speed = this.value;
-    sendCommand(`/setSpeed?value=${speed}`, speed, 'Speed');
-});
-
-document.getElementById('submit-password').addEventListener('click', function() {
-    const password = document.getElementById('password').value;
-    if (password === 'test') {  // Replace 'your_password' with the actual password
-        document.getElementById('password-section').style.display = 'none';
-        document.getElementById('setup-section').style.display = 'block';
-    } else {
-        document.getElementById('password-error').style.display = 'block';
+    // Function to send data
+    function sendData() {
+        const foodBayModules = [];
+  
+        for (let i = 1; i <= 3; i++) {
+            const moduleData = {
+                catName: document.getElementById(`catName${i}`).value,
+                foodQuantity: parseInt(document.getElementById(`foodQuantity${i}`).value, 10),
+                time1: document.getElementById(`time${i}1`).value,
+                time2: document.getElementById(`time${i}2`).value,
+                active: document.getElementById(`active${i}`).checked
+            };
+            foodBayModules.push(moduleData);
+        }
+  
+        const data = { foodBayModules };
+        console.log('Sending data:', JSON.stringify(data)); // Log data to console
+  
+        fetch('/postdata', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => console.log('Module data update success:', result))
+        .catch(error => console.error('Module data update error:', error));
     }
-});
-
-
-document.getElementById('pin-config-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const sdaPin = document.getElementById('sdaPin').value;
-    const sclPin = document.getElementById('sclPin').value;
-    const stepPin = document.getElementById('stepPin').value;
-    const dirPin = document.getElementById('dirPin').value;
-    
-    fetch('/updatePins', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ sdaPin, sclPin, stepPin, dirPin }),
-    })
-    .then(response => response.text())
-    .then(data => alert('Pins updated successfully!'))
-    .catch(error => console.error('Error updating pins:', error));
-});
-
-
-// Function to add a cat to the list and send data to ESP32
-function addCat() {
-    const catName = document.getElementById('cat-name').value;
-    const foodAmount = document.getElementById('food-amount').value;
-    const feedTime = document.getElementById('feeding-time').value;
-    const secondFeedTime = document.getElementById('second-feeding-time').value;
-    const foodBayLocation = document.getElementById('foodBay-location').value;
-
-    if (!catName || !foodAmount) {
-        alert('Please enter both cat name and food amount.');
-        return;
+  
+    // Function to fetch data from the server and populate the form
+    function fetchData() {
+        fetch('/getdata', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(data => populateForm(data.foodBayModules))
+            .catch(error => console.error('Error fetching data:', error));
     }
-
-    const listItem = document.createElement('li');
-    listItem.textContent = `Cat: ${catName}, Food Amount: ${foodAmount} grams, First Feeding Time: ${feedTime}, Second Feeding Time: ${secondFeedTime}, Location: ${foodBayLocation}`;
-    document.getElementById('cat-list-items').appendChild(listItem);
-
-    const data = { catName, foodAmount, feedTime, secondFeedTime, foodBayLocation };
-    sendCommand('/setFoodBayData', data, 'Food amount for ' + catName);
-}
-
-// Event listener for adding a cat
-document.getElementById('add-cat').addEventListener('click', addCat);
+  
+    // Function to populate the form with fetched data
+    function populateForm(foodBayModules) {
+        foodBayModules.forEach((moduleData, index) => {
+            const i = index + 1;
+            document.getElementById(`catName${i}`).value = moduleData.catName;
+            document.getElementById(`foodQuantity${i}`).value = moduleData.foodQuantity;
+            document.getElementById(`time${i}1`).value = moduleData.time1;
+            document.getElementById(`time${i}2`).value = moduleData.time2;
+            document.getElementById(`active${i}`).checked = moduleData.active;
+        });
+    }
+  
+    // Function to set up event listeners for form inputs
+    function setupEventListeners() {
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`catName${i}`).addEventListener('change', sendData);
+            document.getElementById(`foodQuantity${i}`).addEventListener('change', sendData);
+            document.getElementById(`time${i}1`).addEventListener('change', sendData);
+            document.getElementById(`time${i}2`).addEventListener('change', sendData);
+            document.getElementById(`active${i}`).addEventListener('change', sendData);
+        }
+    }
+  
+    // Fetch data when the document is fully loaded
+    fetchData();
+    setupEventListeners();
+  });
+  

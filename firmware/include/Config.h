@@ -14,6 +14,7 @@
 #include <ElegantOTA.h>
 #include <ESPAsyncWebServer.h>
 #include <AccelStepper.h>
+#include <ArduinoJson.h>
 
 // Include all necessary files here
 #include "WebServerManager.h"
@@ -30,6 +31,8 @@
 extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;
 extern AsyncWebServer server;
+extern JsonDocument doc;
+
 
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;
