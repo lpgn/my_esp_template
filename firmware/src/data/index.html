@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Feeder Control Panel</title>
+    <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
         table, th, td {
@@ -21,51 +22,23 @@
         <img src="favicon-32x32.png" alt="Project Logo" class="logo">
         <h1>Welcome to Our ESP Project</h1>
     </header>
-    <section>
-        <h2>Cat Feeder Control Panel</h2>
-        <table>
-            <tr>
-                <th>Module</th>
-                <th>Cat Name</th>
-                <th>Food Quantity</th>
-                <th>Time 1</th>
-                <th>Time 2</th>
-                <th>Active</th>
-            </tr>
-            <tr>
-                <td>Module #1</td>
-                <td><input type="text" id="catName1"></td>
-                <td><input type="number" id="foodQuantity1"></td>
-                <td><input type="time" id="time11"></td>
-                <td><input type="time" id="time12"></td>
-                <td><input type="checkbox" id="active1"></td>
-            </tr>
-            <tr>
-                <td>Module #2</td>
-                <td><input type="text" id="catName2"></td>
-                <td><input type="number" id="foodQuantity2"></td>
-                <td><input type="time" id="time21"></td>
-                <td><input type="time" id="time22"></td>
-                <td><input type="checkbox" id="active2"></td>
-            </tr>
-            <tr>
-                <td>Module #3</td>
-                <td><input type="text" id="catName3"></td>
-                <td><input type="number" id="foodQuantity3"></td>
-                <td><input type="time" id="time31"></td>
-                <td><input type="time" id="time32"></td>
-                <td><input type="checkbox" id="active3"></td>
-            </tr>
-        </table>
-        <button onclick="sendData()">Send Data</button>
-    </section>
-    <aside>
-        <h2>Instructions</h2>
-        <p>Fill in the form and click the "Send Data" button to send the data to the ESP32.</p>
-    </aside>      
-    <footer>
-        <p>Copyright © 2023</p>
-    </footer>
-    <script src="script.js"></script>
+  <h1>Module Data</h1>
+  <table id="data-table" border="1">
+    <tr>
+      <th>Module</th>
+      <th>Cat Name</th>
+      <th>Amount of Food</th>
+      <th>Time 1</th>
+      <th>Time 2</th>
+      <th>Active</th>
+    </tr>
+  </table>
+  <aside>
+    <h2>Instructions</h2>
+    <p>Fill in the form and click the "Send Data" button to send the data to the ESP32.</p>
+</aside>      
+<footer>
+    <p>Copyright © 2023</p>
+</footer>
 </body>
 </html>
