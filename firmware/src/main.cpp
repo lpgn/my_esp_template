@@ -47,18 +47,21 @@ void setupStorage()
     }
 }
 
+// Function to handle root request
+void serveFile(AsyncWebServerRequest *request, String filePath);
+
 void handleRoot(AsyncWebServerRequest *request) {
-    File file = LittleFS.open("/index.html", "r");
-    if (!file) {
-        request->send(500, "text/plain", "Failed to open index.html");
-        return;
-    }
-    request->send(file, "/index.html", "text/html");
-    file.close();
+    serveFile(request, "/index.html");
 }
 
+// Function to handle file requests
 void handleFileRequest(AsyncWebServerRequest *request) {
     String filePath = request->url();
+    serveFile(request, filePath);
+}
+
+// Function to serve a file
+void serveFile(AsyncWebServerRequest *request, String filePath) {
     if (LittleFS.exists(filePath)) {
         File file = LittleFS.open(filePath, "r");
         request->send(file, filePath, "text/html");
@@ -68,6 +71,7 @@ void handleFileRequest(AsyncWebServerRequest *request) {
     }
 }
 
+// Function to handle data requests
 void handleDataRequest(AsyncWebServerRequest *request) {
     String data = readFile("/data.json");
     if (data.isEmpty()) {
@@ -137,8 +141,7 @@ void setup() {
     Serial.println("Connected to WiFi");
 
     setupStorage();
-
-        AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
+    AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
         handleDataUpdate(request, json);
     });
     server.on("/", HTTP_GET, handleRoot);
@@ -146,7 +149,7 @@ void setup() {
     server.addHandler(postDataHandler);
     server.onNotFound(handleFileRequest);
     server.begin();
-    }
+}
 
 void loop() {
     // No need to call server.handleClient() with AsyncWebServer
