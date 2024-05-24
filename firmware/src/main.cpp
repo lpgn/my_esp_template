@@ -4,9 +4,47 @@
 #include <ArduinoJson.h>
 #include <AsyncJson.h>
 
+// Replace with your network credentials
 const char* ssid = "quarto_casal";
 const char* password = "imgrumpy";
 AsyncWebServer server(80);
+
+// Function Prototypes
+bool writeFile(String path, String data);
+String readFile(String path);
+void setupStorage();
+void handleRoot(AsyncWebServerRequest *request);
+void handleFileRequest(AsyncWebServerRequest *request);
+void serveFile(AsyncWebServerRequest *request, String filePath);
+void handleDataRequest(AsyncWebServerRequest *request);
+void handleDataUpdate(AsyncWebServerRequest *request, JsonVariant &json);
+
+
+void setup() {
+    Serial.begin(115200);
+
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.println("Connecting to WiFi...");
+    }
+
+    Serial.println("Connected to WiFi");
+
+    setupStorage();
+    AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
+        handleDataUpdate(request, json);
+    });
+    server.on("/", HTTP_GET, handleRoot);
+    server.on("/data", HTTP_GET, handleDataRequest);
+    server.addHandler(postDataHandler);
+    server.onNotFound(handleFileRequest);
+    server.begin();
+}
+
+void loop() {
+    // No need to call server.handleClient() with AsyncWebServer
+}
 
 // Function to write data to a file
 bool writeFile(String path, String data)
@@ -46,9 +84,6 @@ void setupStorage()
         return;
     }
 }
-
-// Function to handle root request
-void serveFile(AsyncWebServerRequest *request, String filePath);
 
 void handleRoot(AsyncWebServerRequest *request) {
     serveFile(request, "/index.html");
@@ -127,30 +162,4 @@ void handleDataUpdate(AsyncWebServerRequest *request, JsonVariant &json)
     {
         request->send(400, "text/plain", "Invalid request");
     }
-}
-
-void setup() {
-    Serial.begin(115200);
-
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
-    }
-
-    Serial.println("Connected to WiFi");
-
-    setupStorage();
-    AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
-        handleDataUpdate(request, json);
-    });
-    server.on("/", HTTP_GET, handleRoot);
-    server.on("/data", HTTP_GET, handleDataRequest);
-    server.addHandler(postDataHandler);
-    server.onNotFound(handleFileRequest);
-    server.begin();
-}
-
-void loop() {
-    // No need to call server.handleClient() with AsyncWebServer
 }
