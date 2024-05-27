@@ -5,8 +5,8 @@
 #include <AsyncJson.h>
 
 // Replace with your network credentials
-const char* ssid = "quarto_casal";
-const char* password = "imgrumpy";
+const char* ssid = "FabLabWS";
+const char* password = "57289887252221648185KaL!";
 AsyncWebServer server(80);
 
 // Function Prototypes
@@ -22,12 +22,14 @@ void handleDataUpdate(AsyncWebServerRequest *request, JsonVariant &json);
 
 void setup() {
     Serial.begin(115200);
-
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
         Serial.println("Connecting to WiFi...");
     }
+    // print ip address
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
 
     Serial.println("Connected to WiFi");
 
