@@ -2,22 +2,22 @@
 
 void serverHandle()
 {
-    // Serving any file directly from the filesystem (e.g., style.css, script.js)
-    // server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
-    //           {
-    //     String file = request->pathArg(0);
-    //     Serial.printf("Serving file %s\n\r", file.c_str());
-    //     request->send(LittleFS, file, String(), false); });
-    server.on("/moveStepper", HTTP_POST, handleMoveStepper);
-    server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
-    server.on("/setSpeed", HTTP_POST, handleSetSpeed);
-
     // Additional routes
     AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
         handleDataUpdate(request, json);
     });
     server.on("/", HTTP_GET, handleRoot);
     server.on("/data", HTTP_GET, handleDataRequest);
+    // Serving any file directly from the filesystem (e.g., style.css, script.js)
+    server.on("/moveStepper", HTTP_POST, handleMoveStepper);
+    server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
+    server.on("/setSpeed", HTTP_POST, handleSetSpeed);
+    server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+    String file = request->pathArg(0);
+
+    Serial.printf("Serving file %s\n\r", file.c_str());
+    request->send(LittleFS, file, String(), false); });
     server.addHandler(postDataHandler);
     server.onNotFound(handleFileRequest);
     server.begin();

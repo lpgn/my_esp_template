@@ -1,17 +1,4 @@
 #include "Config.h"
-#include "hanleTemplate.tpp"
-
-// declare stepper driver pins
-#define STEPPER1_STEP_PIN 38
-#define STEPPER1_DIR_PIN 37
-
-// Define the stepper motor fi
-AccelStepper stepper(AccelStepper::DRIVER, STEPPER1_STEP_PIN, STEPPER1_DIR_PIN);
-
-void initializeStepper() {
-    stepper.setMaxSpeed(100000.0);
-    stepper.setAcceleration(2000.0);
-}
 
 // Function to handle moving the stepper to a specific position
 void handleMoveStepper(AsyncWebServerRequest *request) {
