@@ -30,6 +30,13 @@ void loop() {
     // Enter the main loop
     // The ESP32 now waits passively for RFID data from the Tiny1614
     // Non-blocking delay with callback
-    nonBlockingDelay(600000, checkFeedingSchedule);
+    // nonBlockingDelay(600, checkFeedingSchedule);
+    checkFeedingSchedule();
     //wait passively for RFID read from the Tiny1614
+    //check if the RFID tag is valid
+    //if valid, check if the tag is in the feeding schedule
+    //if in the feeding schedule, check if the feeding schedule is active
+    //if active move the stepper to the food bay position
+    //if not in the feeding schedule, do nothing
+
 }

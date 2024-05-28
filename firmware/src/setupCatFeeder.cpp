@@ -5,9 +5,7 @@ void setupFeeder() {
      // Initialize I2C communication
     Wire.begin(0x04);
     Wire.onReceive(receiveEvent); // Register an event handler for I2C receive events
-
     calibrateReservoir();
-    loadFeedingSchedule();
     checkFeedingSchedule();
 }
 // note to future Bianca: eventually change the homing speed to slower when aproaching 0
@@ -24,22 +22,16 @@ void calibrateReservoir() {
     stepperReservoir.setCurrentPosition(0);
 }
 
-// Function to load the feeding schedule
-void loadFeedingSchedule() {
-    Serial.println("Loading feeding schedule...");
+void moveReservoir() {
+    // Logic to move the reservoir
+    Serial.println("Moving reservoir...");
+    // Example: stepperReservoir.moveTo(0); stepperReservoir.runToPosition();
 }
 
-// Function to check the feeding schedule
-void checkFeedingSchedule() {
-    Serial.println("Checking feeding schedule...");
-}
-
-// Function to check if the cat has already eaten
-void checkIfAlreadyAte() {
-    // Code to check if the cat has already eaten
-    Serial.println("Checking if the cat has already eaten...");
-    // need to add logic to load food if already ate before
-    //if (/* result of checkIfAlreadyAte() */) {
-    //    loadFood();
-    //}
+void moveScrew(int amount) {
+    // Logic to move the screw and dispense food
+    Serial.print("Dispensing ");
+    Serial.print(amount);
+    Serial.println(" grams of food...");
+    // Example: stepperScrew.moveTo(amount); stepperScrew.runToPosition();
 }
