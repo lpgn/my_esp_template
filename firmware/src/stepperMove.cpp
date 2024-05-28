@@ -1,7 +1,12 @@
 #include "Config.h"
 #include "hanleTemplate.tpp"
 
-AccelStepper stepper(AccelStepper::DRIVER, 35, 36); // Ensure these are valid pins
+// declare stepper driver pins
+#define STEPPER1_STEP_PIN 38
+#define STEPPER1_DIR_PIN 37
+
+// Define the stepper motor fi
+AccelStepper stepper(AccelStepper::DRIVER, STEPPER1_STEP_PIN, STEPPER1_DIR_PIN);
 
 void initializeStepper() {
     stepper.setMaxSpeed(100000.0);

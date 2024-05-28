@@ -22,6 +22,7 @@
 #include "TimeHandler.h"
 #include "stepperMove.h"
 #include "hanleTemplate.tpp"
+#include "handleEndstop.h"
 
 extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;

@@ -4,9 +4,11 @@
 void printCompilationTimestamp()
 {
     Serial.println("*****************************************************");
-    Serial.printf("* This program was compiled on: %s at %s\n\r", __DATE__, __TIME__);
-    Serial.println("*****************************************************\n\r");
+    Serial.println("* Function printCompilationTimestamp()");
+    Serial.printf("* Compiled on %s at %s\n\r", __DATE__, __TIME__);
+    Serial.println("*****************************************************");
 }
+
 
 void printRtcDateTime(const RtcDateTime &dt)
 {
