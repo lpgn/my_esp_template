@@ -14,6 +14,8 @@
 #include <ElegantOTA.h>
 #include <ESPAsyncWebServer.h>
 #include <AccelStepper.h>
+#include <AsyncJson.h>
+#include <ArduinoJson.h>
 
 // Include all necessary files here
 #include "WebServerManager.h"

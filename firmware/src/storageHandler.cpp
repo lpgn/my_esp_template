@@ -43,3 +43,18 @@ void setupStorage()
         return;
     }
 }
+
+// // Function to read data from a file
+// String readFile(String path)
+// {
+//     File file = LittleFS.open(path, "r");
+//     if (!file)
+//     {
+//         Serial.printf("Failed to open file '%s' for reading\n", path.c_str());
+//         return "";
+//     }
+//     String data = file.readString();
+//     file.close();
+//     Serial.printf("Read from file '%s'\n", path.c_str());
+//     return data;
+// }

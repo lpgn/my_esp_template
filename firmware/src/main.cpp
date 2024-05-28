@@ -20,7 +20,7 @@ void setup() {
     serverHandle();
     initializeStepper();
     // initializeEndStop();
-}
+    }
 
 void loop() {
     stepper.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
