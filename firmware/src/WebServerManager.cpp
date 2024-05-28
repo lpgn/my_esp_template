@@ -2,22 +2,12 @@
 
 void serverHandle()
 {
-    // Serving index.html
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->send(LittleFS, "/index.html", String(), false); });
-    
     // Serving any file directly from the filesystem (e.g., style.css, script.js)
-    server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
-              {
-        String file = request->pathArg(0);
-        Serial.printf("Serving file %s\n\r", file.c_str());
-        request->send(LittleFS, file, String(), false); });
-
-    // 404 Not Found Handler
-    server.onNotFound([](AsyncWebServerRequest *request) {
-        request->send(404, "text/plain", "404: Not Found");
-    });
-    //
+    // server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
+    //           {
+    //     String file = request->pathArg(0);
+    //     Serial.printf("Serving file %s\n\r", file.c_str());
+    //     request->send(LittleFS, file, String(), false); });
     server.on("/moveStepper", HTTP_POST, handleMoveStepper);
     server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
     server.on("/setSpeed", HTTP_POST, handleSetSpeed);
@@ -34,48 +24,37 @@ void serverHandle()
 }
 
 // Handle requests to the root URL
-void handleRoot(AsyncWebServerRequest *request)
-{
-    request->send(200, "text/plain", "Hello, world");
+void handleRoot(AsyncWebServerRequest *request) {
+    serveFile(request, "/index.html");
 }
 
 // Handle requests for files
-void handleFileRequest(AsyncWebServerRequest *request)
-{
-    serveFile(request, request->url());
+void handleFileRequest(AsyncWebServerRequest *request) {
+    String filePath = request->url();
+    serveFile(request, filePath);
 }
 
 // Serve a file from LittleFS
-void serveFile(AsyncWebServerRequest *request, String filePath)
-{
-    File file = LittleFS.open(filePath, "r");
-    if (!file)
-    {
+void serveFile(AsyncWebServerRequest *request, String filePath) {
+    if (LittleFS.exists(filePath)) {
+        File file = LittleFS.open(filePath, "r");
+        request->send(file, filePath, "text/html");
+        file.close();
+    } else {
         request->send(404, "text/plain", "File not found");
-        return;
     }
-    String contentType = "text/plain";
-    if (filePath.endsWith(".html"))
-    {
-        contentType = "text/html";
-    }
-    request->send(file, filePath, contentType);
-    file.close();
 }
 
 // Handle data requests
-void handleDataRequest(AsyncWebServerRequest *request)
-{
+void handleDataRequest(AsyncWebServerRequest *request) {
     String data = readFile("/data.json");
-    if (data.isEmpty())
-    {
+    if (data.isEmpty()) {
         request->send(500, "text/plain", "Failed to read data.json");
         return;
     }
     request->send(200, "application/json", data);
 }
-
-// Handle data updates
+// Function to handle POST /postdata
 void handleDataUpdate(AsyncWebServerRequest *request, JsonVariant &json)
 {
     JsonObject obj = json.as<JsonObject>();
