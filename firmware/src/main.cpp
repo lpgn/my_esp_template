@@ -25,6 +25,7 @@ void setup() {
 
 void loop() {
     stepperScrew.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
+    // handleEndStop();    
     stepperReservoir.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
     // Enter the main loop
     // The ESP32 now waits passively for RFID data from the Tiny1614

@@ -1,127 +1,103 @@
 #include "WebServerManager.h"
 
-// HTTP status codes
-const int HTTP_OK = 200;
-const int HTTP_INTERNAL_SERVER_ERROR = 500;
-const int HTTP_METHOD_NOT_ALLOWED = 405;
-
 void serverHandle()
 {
-    // Inicializa o sistema de arquivos
-    if (!LittleFS.begin()) {
-        Serial.println("Failed to mount file system");
-        return;
-    }
-
-    // Servir index.html
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(LittleFS, "/index.html", String(), false);
-    });
-
-    // Servir qualquer arquivo diretamente do sistema de arquivos (por exemplo, style.css, script.js)
-    server.on("^(\\/([a-zA-Z0-9_\\.-]+)*)$", HTTP_GET, [](AsyncWebServerRequest *request) {
-        String file = request->pathArg(0);
-        Serial.printf("Serving file %s\n", file.c_str());
-        request->send(LittleFS, file, String(), false);
-    });
-
-    // Endpoint para atualizar dados JSON
-    server.on("/postdata", HTTP_POST, [](AsyncWebServerRequest *request) {
-        if (request->hasParam("plain", true)) {
-            String data = request->getParam("plain", true)->value();
-            File file = LittleFS.open("/data.json", "w");
-            if (!file) {
-                request->send(HTTP_INTERNAL_SERVER_ERROR, "application/json", "{\"status\":\"fail\"}");
-                return;
-            }
-            file.print(data);
-            file.close();
-            request->send(HTTP_OK, "application/json", "{\"status\":\"success\"}");
-        } else {
-            request->send(HTTP_METHOD_NOT_ALLOWED, "application/json", "{\"status\":\"fail\"}");
-        }
-    });
-
-    // Endpoint para obter dados JSON
-    server.on("/getdata", HTTP_GET, [](AsyncWebServerRequest *request) {
-        File file = LittleFS.open("/data.json", "r");
-        if (!file) {
-            request->send(HTTP_INTERNAL_SERVER_ERROR, "application/json", "{\"status\":\"fail\"}");
-            return;
-        }
-        String json = file.readString();
-        file.close();
-        request->send(HTTP_OK, "application/json", json);
-    });
-
-    // Outros endpoints existentes
+    // Serving any file directly from the filesystem (e.g., style.css, script.js)
+    // server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
+    //           {
+    //     String file = request->pathArg(0);
+    //     Serial.printf("Serving file %s\n\r", file.c_str());
+    //     request->send(LittleFS, file, String(), false); });
     server.on("/moveStepper", HTTP_POST, handleMoveStepper);
     server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
     server.on("/setSpeed", HTTP_POST, handleSetSpeed);
 
-    // Handler para 404 Not Found
-    server.onNotFound([](AsyncWebServerRequest *request) {
-        request->send(404, "text/plain", "404: Not Found");
+    // Additional routes
+    AsyncCallbackJsonWebHandler* postDataHandler = new AsyncCallbackJsonWebHandler("/postdata", [](AsyncWebServerRequest *request, JsonVariant &json) {
+        handleDataUpdate(request, json);
     });
+    server.on("/", HTTP_GET, handleRoot);
+    server.on("/data", HTTP_GET, handleDataRequest);
+    server.addHandler(postDataHandler);
+    server.onNotFound(handleFileRequest);
+    server.begin();
 }
 
-// // Funções de controle do stepper motor
-// void handleMoveStepper(AsyncWebServerRequest *request) {
-//     if (request->method() == HTTP_POST) {
-//         if (request->hasParam("plain", true)) {
-//             int steps = request->getParam("plain", true)->value().toInt();
-//             Serial.printf("Moving stepper by %d steps\n", steps);
-//             moveStepper(steps, stepperReservoir);
-//             request->send(HTTP_OK, "text/plain", "Stepper moved");
-//         } else {
-//             request->send(HTTP_METHOD_NOT_ALLOWED, "text/plain", "Method Not Allowed");
-//         }
-//     }
-// }
+// Handle requests to the root URL
+void handleRoot(AsyncWebServerRequest *request) {
+    serveFile(request, "/index.html");
+}
 
-// void handleSetAcceleration(AsyncWebServerRequest *request) {
-//     if (request->method() == HTTP_POST) {
-//         if (request->hasParam("plain", true)) {
-//             int acceleration = request->getParam("plain", true)->value().toInt();
-//             Serial.printf("Setting acceleration to %d\n", acceleration);
-//             setAcceleration(acceleration, stepperReservoir);
-//             request->send(HTTP_OK, "text/plain", "Acceleration set");
-//         } else {
-//             request->send(HTTP_METHOD_NOT_ALLOWED, "text/plain", "Method Not Allowed");
-//         }
-//     }
-// }
+// Handle requests for files
+void handleFileRequest(AsyncWebServerRequest *request) {
+    String filePath = request->url();
+    serveFile(request, filePath);
+}
 
-// void handleSetSpeed(AsyncWebServerRequest *request) {
-//     if (request->method() == HTTP_POST) {
-//         if (request->hasParam("plain", true)) {
-//             int speed = request->getParam("plain", true)->value().toInt();
-//             Serial.printf("Setting speed to %d\n", speed);
-//             setSpeed(speed, stepperReservoir);
-//             request->send(HTTP_OK, "text/plain", "Speed set");
-//         } else {
-//             request->send(HTTP_METHOD_NOT_ALLOWED, "text/plain", "Method Not Allowed");
-//         }
-//     }
-// }
+// Serve a file from LittleFS
+void serveFile(AsyncWebServerRequest *request, String filePath) {
+    if (LittleFS.exists(filePath)) {
+        File file = LittleFS.open(filePath, "r");
+        request->send(file, filePath, "text/html");
+        file.close();
+    } else {
+        request->send(404, "text/plain", "File not found");
+    }
+}
 
-// // Implementação das funções de leitura e escrita (se necessário)
-// bool writeFile(String path, String data) {
-//     File file = LittleFS.open(path, "w");
-//     if (!file) {
-//         return false;
-//     }
-//     file.print(data);
-//     file.close();
-//     return true;
-// }
+// Handle data requests
+void handleDataRequest(AsyncWebServerRequest *request) {
+    String data = readFile("/data.json");
+    if (data.isEmpty()) {
+        request->send(500, "text/plain", "Failed to read data.json");
+        return;
+    }
+    request->send(200, "application/json", data);
+}
+// Function to handle POST /postdata
+void handleDataUpdate(AsyncWebServerRequest *request, JsonVariant &json)
+{
+    JsonObject obj = json.as<JsonObject>();
 
-// String readFile(String path) {
-//     File file = LittleFS.open(path, "r");
-//     if (!file) {
-//         return "";
-//     }
-//     String data = file.readString();
-//     file.close();
-//     return data;
-// }
+    if (obj.containsKey("module") && obj.containsKey("key") && obj.containsKey("value"))
+    {
+        const char* module = obj["module"];
+        const char* key = obj["key"];
+        auto value = obj["value"];
+
+        String data = readFile("/data.json");
+        if (data.isEmpty())
+        {
+            request->send(500, "text/plain", "Failed to read data.json");
+            return;
+        }
+
+        JsonDocument jsonData;
+        deserializeJson(jsonData, data);
+        JsonObject jsonObj = jsonData[module];
+
+        if (strcmp(key, "cat_name") == 0 || strcmp(key, "amount_food") == 0 || strcmp(key, "time1") == 0 || strcmp(key, "time2") == 0)
+        {
+            jsonObj[key] = value.as<const char*>();
+        }
+        else if (strcmp(key, "active") == 0)
+        {
+            jsonObj[key] = value.as<bool>();
+        }
+
+        String updatedData;
+        serializeJson(jsonData, updatedData);
+
+        if (!writeFile("/data.json", updatedData))
+        {
+            request->send(500, "text/plain", "Failed to write data.json");
+            return;
+        }
+
+        request->send(200, "text/plain", "Data updated successfully");
+    }
+    else
+    {
+        request->send(400, "text/plain", "Invalid request");
+    }
+}

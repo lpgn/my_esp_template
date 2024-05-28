@@ -14,6 +14,7 @@
 #include <ElegantOTA.h>
 #include <ESPAsyncWebServer.h>
 #include <AccelStepper.h>
+#include <AsyncJson.h>
 #include <ArduinoJson.h>
 
 // Include all necessary files here
@@ -23,6 +24,7 @@
 #include "TimeHandler.h"
 #include "stepperMove.h"
 #include "templates.tpp"
+#include "handleEndstop.h"
 #include "communication.h"
 #include "catDetection.h"
 #include "setupCatFeeder.h"
