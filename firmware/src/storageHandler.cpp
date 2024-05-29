@@ -1,11 +1,3 @@
-/**
- * @file storageHandler.cpp
- * @brief Implements storage management functions.
- *
- * Implements methods of the StorageHandler class. These methods manage all interactions with
- * the device's non-volatile storage, providing functionality to save and load configurations.
- */
-
 #include "storageHandler.h"
 
 bool writeFile(String path, String data)
@@ -43,18 +35,3 @@ void setupStorage()
         return;
     }
 }
-
-// // Function to read data from a file
-// String readFile(String path)
-// {
-//     File file = LittleFS.open(path, "r");
-//     if (!file)
-//     {
-//         Serial.printf("Failed to open file '%s' for reading\n", path.c_str());
-//         return "";
-//     }
-//     String data = file.readString();
-//     file.close();
-//     Serial.printf("Read from file '%s'\n", path.c_str());
-//     return data;
-// }

@@ -1,11 +1,3 @@
-/**
- * @file main.cpp
- * @brief Main program execution entry point.
- *
- * Initializes the system components and enters the main operation loop. This file sets up
- * network connections, server responses, and periodic tasks.
- */
-
 #include "config.h"
 
 void setup() {
@@ -24,20 +16,9 @@ void setup() {
 }
 
 void loop() {
-    nonBlockingDelay(60000, checkFeedingSchedule, lastCallTime);
-    // Serial.println("Loop end");
-    // delay(1000); // Adding a delay to avoid potential flooding of Serial output
-    // stepperScrew.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
-    // handleEndStop();    
-    // stepperReservoir.run();  // Regularly call this to update stepper position and handle speed/acceleration changes
-    // Enter the main loop
-    // The ESP32 now waits passively for RFID data from the Tiny1614
     // Non-blocking delay with callback
-    //wait passively for RFID read from the Tiny1614
-    //check if the RFID tag is valid
-    //if valid, check if the tag is in the feeding schedule
-    //if in the feeding schedule, check if the feeding schedule is active
-    //if active move the stepper to the food bay position
-    //if not in the feeding schedule, do nothing
-
-    }
+    nonBlockingDelay(60000, checkFeedingSchedule, lastCallTime);
+    // checking if Cat is at the door
+    // validateCatInfo(rfidTag);
+    // log cat entry
+    // logCatEntry(rfidTag);

@@ -1,11 +1,3 @@
-/**
- * @file .cpp
- * @brief Implementation of global configuration variables.
- *
- * Defines and initializes configuration parameters used across the project. This implementation
- * helps in isolating configuration management from business logic.
- */
-
 #include "config.h"
 
 ESP32Time rtc;
@@ -53,13 +45,12 @@ int foodBay1 = 0;
 int foodBay2 = 33;
 // foodBay 3 is in angle 120 so it needs to move 200/360*120 = 66.66
 int foodBay3 = 67;
-//if I want to add more foodBays, follow the same logic 
 
 int maxSpeedReservoir = 50.0;
 int accelerationReservoir = 100.0;
 int maxSpeedScrew = 50.0;
 int accelerationScrew = 100.0;
 
-int stepsPerGram = 1000;
+int stepsPerGram = 10;
 
 

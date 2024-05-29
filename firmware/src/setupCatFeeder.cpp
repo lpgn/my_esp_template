@@ -8,7 +8,6 @@ void setupFeeder() {
     //calibrateReservoir();
 }
 
-// note to future Bianca: eventually change the homing speed to slower when approaching 0
 // Function to calibrate the reservoir
 void calibrateReservoir() {
     Serial.println("Calibrating reservoir...");

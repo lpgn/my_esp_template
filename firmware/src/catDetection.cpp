@@ -1,7 +1,6 @@
 //cat detection code
 #include "catDetection.h"
 
-
 void validateCatInfo(String rfidTag) {
    // Code to validate cat's information
     Serial.println("Validating cat information...");

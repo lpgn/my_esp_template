@@ -1,7 +1,5 @@
 #include <scheduleHandler.h>
 
-// Assuming other necessary includes and global objects are already declared
-
 void checkFeedingSchedule() {
     //Serial.println("Checking feeding schedule...");
 

@@ -1,8 +1,3 @@
-//feeding mechanism code
-//This code is responsible for the feeding mechanism of the cat feeder
-//It includes the functions to initialize the stepper motors, determine the food amount, 
-//rotate the reservoir, rotate the feed screw, and handle the entire feeding process
-
 #include "feedingMechanism.h"
 
 void initializeStepper() {
