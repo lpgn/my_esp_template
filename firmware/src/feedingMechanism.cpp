@@ -10,10 +10,10 @@ int stepsMotor2 = foodAmount * 10; // Steps per gram for X amount of food
 
 void initializeStepper() {
    //note to self: add the correct values for the max speed and acceleration
-    stepperReservoir.setMaxSpeed(100000.0); 
-    stepperReservoir.setAcceleration(2000.0); 
-    stepperScrew.setMaxSpeed(100000.0);
-    stepperScrew.setAcceleration(2000.0);
+    stepperReservoir.setMaxSpeed(200.0); 
+    stepperReservoir.setAcceleration(200.0); 
+    stepperScrew.setMaxSpeed(200.0);
+    stepperScrew.setAcceleration(200.0);
 }
 
 
