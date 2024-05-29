@@ -1,7 +1,7 @@
 #ifndef STEPPER_MOVE_H
 #define STEPPER_MOVE_H
 
-#include "Config.h"
+#include "config.h"
 
 // Function declarations
 void handleMoveStepper(AsyncWebServerRequest *request);

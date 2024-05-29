@@ -9,7 +9,7 @@
 #ifndef WIFIHANDLER_H
 #define WIFIHANDLER_H
 
-#include "Config.h"
+#include "config.h"
 
 void printAccessPointIP();
 void printConnectedWiFiStatus();

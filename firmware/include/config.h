@@ -18,10 +18,10 @@
 #include <ArduinoJson.h>
 
 // Include all necessary files here
-#include "WebServerManager.h"
-#include "WiFiHandler.h"
+#include "webServerManager.h"
+#include "wiFiHandler.h"
 #include "storageHandler.h"
-#include "TimeHandler.h"
+#include "timeHandler.h"
 #include "stepperMove.h"
 #include "templates.tpp"
 #include "handleEndstop.h"
@@ -30,7 +30,7 @@
 #include "setupCatFeeder.h"
 #include "feedingMechanism.h"
 #include "scheduleHandler.h"
-#include "JsonHandler.h"
+#include "jsonHandler.h"
 
 
 extern ESP32Time rtc;
@@ -39,6 +39,7 @@ extern AsyncWebServer server;
 extern JsonDocument doc;
 extern unsigned long lastCallTime;
 
+extern const int endStopPin;
 
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;

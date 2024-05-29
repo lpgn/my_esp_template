@@ -1,18 +1,22 @@
 /**
- * @file Config.cpp
+ * @file .cpp
  * @brief Implementation of global configuration variables.
  *
  * Defines and initializes configuration parameters used across the project. This implementation
  * helps in isolating configuration management from business logic.
  */
 
-#include "Config.h"
+#include "config.h"
 
 ESP32Time rtc;
 WiFiMulti wifiMulti;
 AsyncWebServer server(80);
 JsonDocument doc;
 unsigned long lastCallTime = 0;
+
+// define pin for endstop
+// this is a setup for the endstop pin
+const int endStopPin = 42;
 
 
 const char *wifi_network_hostname = "name_hostname";
@@ -31,29 +35,29 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
 //define the pins for the steppers
-#define STEPPER1_STEP_PIN 38
-#define STEPPER1_DIR_PIN 37
-#define STEPPER2_STEP_PIN 39
-#define STEPPER2_DIR_PIN 40
+#define stepperReservoirStepPin 38
+#define stepperReservoirDirPin 37
+#define stepperScrewStepPin 39
+#define stepperScrewDirPin 40
 
 // Define steppers and the pins they will use
-AccelStepper stepperReservoir(AccelStepper::DRIVER, STEPPER1_STEP_PIN, STEPPER1_DIR_PIN); // Ensure these are valid pins
-AccelStepper stepperScrew(AccelStepper::DRIVER, STEPPER2_STEP_PIN, STEPPER2_DIR_PIN); // Ensure these are valid pins
+AccelStepper stepperReservoir(AccelStepper::DRIVER, stepperReservoirStepPin, stepperReservoirDirPin); // Ensure these are valid pins
+AccelStepper stepperScrew(AccelStepper::DRIVER, stepperScrewStepPin, stepperScrewDirPin); // Ensure these are valid pins
 // define endstop pin
 int endstopPin = 2;
 
 // variables to define foodBay position in steps since its 800 steps per revolution and there are 3 foodBays
 // 1st one is in angle 0, second in angle 60 and third in angle 120
 int foodBay1 = 0;
-// foodBay 2 is in angle 60 so it needs to move 800/360*60 = 133.33 steps
-int foodBay2 = 133;
-// foodBay 3 is in angle 120 so it needs to move 800/360*120 = 266.67 steps
-int foodBay3 = 267;
+// foodBay 2 is in angle 60 so it needs to move 200/360*60 = 33.33
+int foodBay2 = 33;
+// foodBay 3 is in angle 120 so it needs to move 200/360*120 = 66.66
+int foodBay3 = 67;
 //if I want to add more foodBays, follow the same logic 
 
-int maxSpeedReservoir = 100.0;
+int maxSpeedReservoir = 50.0;
 int accelerationReservoir = 100.0;
-int maxSpeedScrew = 100.0;
+int maxSpeedScrew = 50.0;
 int accelerationScrew = 100.0;
 
 int foodAmount = 100;

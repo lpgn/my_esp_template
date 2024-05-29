@@ -1,5 +1,4 @@
-#include "TimeHandler.h"
-#include "Config.h"
+#include "timeHandler.h"
 
 void printCompilationTimestamp()
 {

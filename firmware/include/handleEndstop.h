@@ -2,9 +2,7 @@
 #ifndef HANDLEENDSTOP_H
 #define HANDLEENDSTOP_H
 
-#include <Arduino.h>
-
-extern const int endStopPin;
+#include <config.h>
 
 class EndStop
 {

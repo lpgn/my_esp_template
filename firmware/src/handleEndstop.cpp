@@ -1,11 +1,6 @@
 
 #include "handleEndstop.h"
 
-// define pin for endstop
-// this is a setup for the endstop pin
-
-const int endStopPin = 42;
-
 // constructor for the endstop class
 // this is a setup for the endstop class
 

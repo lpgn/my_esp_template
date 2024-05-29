@@ -1,7 +1,7 @@
 #ifndef FEEINGMECHANISM_H
 #define FEEINGMECHANISM_H
 
-#include "Config.h"
+#include "config.h"
 
 void initializeStepper(); // Initializes the stepper motors
 int determineFoodAmount(const String& catName, int foodAmount); // Determines the required amount of food

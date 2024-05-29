@@ -6,7 +6,7 @@
  * network connections, server responses, and periodic tasks.
  */
 
-#include "Config.h"
+#include "config.h"
 
 void setup() {
     Serial.begin(115200);

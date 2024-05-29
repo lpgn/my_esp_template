@@ -1,7 +1,7 @@
 #ifndef SCHEDULE_HANDLER_H
 #define SCHEDULE_HANDLER_H
 
-#include "Config.h"
+#include "config.h"
 
 void checkFeedingSchedule();
 

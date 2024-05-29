@@ -1,7 +1,7 @@
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
 
-#include "Config.h"
+#include "config.h"
 
 
 void receiveEvent(int howMany); // Receives RFID tag data from Tiny1614

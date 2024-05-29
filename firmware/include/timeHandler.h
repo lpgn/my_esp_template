@@ -1,7 +1,7 @@
 #ifndef TIME_HANDLER_H
 #define TIME_HANDLER_H
 
-#include "Config.h"
+#include "config.h"
 
 void printCompilationTimestamp();
 void printRtcDateTime(const RtcDateTime &dt);
