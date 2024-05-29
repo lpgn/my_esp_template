@@ -66,4 +66,12 @@ extern int foodBay1;
 extern int foodBay2;
 extern int foodBay3;
 
-#endif // CONFIG_H
+extern int maxSpeedReservoir;
+extern int accelerationReservoir;
+extern int maxSpeedScrew;
+extern int accelerationScrew;
+
+extern int foodAmount;
+extern int stepsMotor2;
+
+#endif

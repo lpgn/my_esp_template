@@ -50,3 +50,13 @@ int foodBay2 = 133;
 // foodBay 3 is in angle 120 so it needs to move 800/360*120 = 266.67 steps
 int foodBay3 = 267;
 //if I want to add more foodBays, follow the same logic 
+
+int maxSpeedReservoir = 100.0;
+int accelerationReservoir = 100.0;
+int maxSpeedScrew = 100.0;
+int accelerationScrew = 100.0;
+
+int foodAmount = 100;
+int stepsMotor2 = 100;
+
+

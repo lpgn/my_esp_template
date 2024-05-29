@@ -5,15 +5,12 @@
 
 #include "feedingMechanism.h"
 
-int foodAmount = 100; // Amount of food to dispense in grams
-int stepsMotor2 = foodAmount * 10; // Steps per gram for X amount of food
-
 void initializeStepper() {
    //note to self: add the correct values for the max speed and acceleration
-    stepperReservoir.setMaxSpeed(200.0); 
-    stepperReservoir.setAcceleration(200.0); 
-    stepperScrew.setMaxSpeed(200.0);
-    stepperScrew.setAcceleration(200.0);
+    stepperReservoir.setMaxSpeed(maxSpeedReservoir);
+    stepperReservoir.setAcceleration(accelerationReservoir);
+    stepperScrew.setMaxSpeed(maxSpeedScrew);
+    stepperScrew.setAcceleration(accelerationScrew);
 }
 
 

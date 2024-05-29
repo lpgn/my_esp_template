@@ -15,6 +15,24 @@
         th, td {
             text-align: center;
         }
+        
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.8em;
+                padding: 5px;
+            }
+            th, td {
+                display: block;
+                text-align: left;
+                width: 100%;
+            }
+            th {
+                background-color: #f4f4f4;
+            }
+            td {
+                border-top: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -22,23 +40,23 @@
         <img src="favicon-32x32.png" alt="Project Logo" class="logo">
         <h1>Welcome to Our ESP Project</h1>
     </header>
-  <h1>Module Data</h1>
-  <table id="data-table" border="1">
-    <tr>
-      <th>Module</th>
-      <th>Cat Name</th>
-      <th>Amount of Food</th>
-      <th>Time 1</th>
-      <th>Time 2</th>
-      <th>Active</th>
-    </tr>
-  </table>
-  <aside>
-    <h2>Instructions</h2>
-    <p>Type directelly in the form</p>
-</aside>      
-<footer>
-    <p>Copyright © 2023</p>
-</footer>
+    <h1>Module Data</h1>
+    <table id="data-table">
+        <tr>
+            <th>Module</th>
+            <th>Cat Name</th>
+            <th>Amount of Food</th>
+            <th>Time 1</th>
+            <th>Time 2</th>
+            <th>Active</th>
+        </tr>
+    </table>
+    <aside>
+        <h2>Instructions</h2>
+        <p>Type directly in the form</p>
+    </aside>      
+    <footer>
+        <p>Copyright © 2023</p>
+    </footer>
 </body>
 </html>
