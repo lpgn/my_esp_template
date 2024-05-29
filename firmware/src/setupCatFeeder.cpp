@@ -2,11 +2,11 @@
 #include "setupCatFeeder.h"
 // Function to setup the cat feeder system
 void setupFeeder() {
-     // Initialize I2C communication
-    Wire.begin(0x04);
-    Wire.onReceive(receiveEvent); // Register an event handler for I2C receive events
-    calibrateReservoir();
     checkFeedingSchedule();
+    // Initialize I2C communication
+    // Wire.begin(0x04);
+    // Wire.onReceive(receiveEvent); // Register an event handler for I2C receive events
+    //calibrateReservoir();
 }
 // note to future Bianca: eventually change the homing speed to slower when aproaching 0
 // Function to calibrate the reservoir
