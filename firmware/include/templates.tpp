@@ -1,7 +1,6 @@
 #ifndef HANLE_TEMPLATE_TPP
 #define HANLE_TEMPLATE_TPP
 
-#include <ESPAsyncWebServer.h>
 #include "config.h"
 
 // Template function implementation

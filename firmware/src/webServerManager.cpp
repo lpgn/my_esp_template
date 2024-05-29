@@ -9,9 +9,6 @@ void serverHandle()
     server.on("/", HTTP_GET, handleRoot);
     server.on("/data", HTTP_GET, handleDataRequest);
     // Serving any file directly from the filesystem (e.g., style.css, script.js)
-    server.on("/moveStepper", HTTP_POST, handleMoveStepper);
-    server.on("/setAcceleration", HTTP_POST, handleSetAcceleration);
-    server.on("/setSpeed", HTTP_POST, handleSetSpeed);
     server.on("^(\\/[a-zA-Z0-9_.-]*)$", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     String file = request->pathArg(0);
