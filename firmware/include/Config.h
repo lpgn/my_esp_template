@@ -37,6 +37,7 @@ extern ESP32Time rtc;
 extern WiFiMulti wifiMulti;
 extern AsyncWebServer server;
 extern JsonDocument doc;
+extern unsigned long lastCallTime;
 
 
 extern const char *wifi_network_hostname;

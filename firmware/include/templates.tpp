@@ -17,9 +17,9 @@ void handleTemplate(AsyncWebServerRequest *request, const char* paramName,
     }
 }
 
+// Non-blocking delay function template
 template<typename Callback>
-void nonBlockingDelay(unsigned long interval, Callback callback) {
-    unsigned long lastMillis = 0;
+void nonBlockingDelay(unsigned long interval, Callback callback, unsigned long &lastMillis) {
     unsigned long currentMillis = millis();
     if (currentMillis - lastMillis >= interval) {
         lastMillis = currentMillis;

@@ -12,6 +12,8 @@ ESP32Time rtc;
 WiFiMulti wifiMulti;
 AsyncWebServer server(80);
 JsonDocument doc;
+unsigned long lastCallTime = 0;
+
 
 const char *wifi_network_hostname = "name_hostname";
 const char *soft_ap_ssid = "name_SSID";

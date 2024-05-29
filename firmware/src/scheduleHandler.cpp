@@ -11,7 +11,7 @@ void checkFeedingSchedule() {
 
     Serial.println("Successfully read data.json");
 
-    JsonDocument doc;  // Adjust the size as needed
+    JsonDocument doc; // Adjust the size as needed
     DeserializationError error = deserializeJson(doc, data);
     if (error) {
         Serial.print("Failed to parse JSON: ");
@@ -50,7 +50,7 @@ void checkFeedingSchedule() {
         Serial.print("Amount of food: ");
         Serial.println(amount_food);
 
-        if (active && (strcmp(time1, currentTime) == 0 || strcmp(time2, currentTime) == 0)) {
+        if (active && (strncmp(time1, currentTime, 5) == 0 || strncmp(time2, currentTime, 5) == 0)) {
             Serial.print("Feeding time for module: ");
             Serial.println(module.key().c_str());
             // Placeholder for feeding code
