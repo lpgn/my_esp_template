@@ -2,11 +2,10 @@
 
 // Function to setup the cat feeder system
 void setupFeeder() {
-    checkFeedingSchedule();
     // Initialize I2C communication
     // Wire.begin(0x04);
     // Wire.onReceive(receiveEvent); // Register an event handler for I2C receive events
-    // calibrateReservoir();
+    //calibrateReservoir();
 }
 
 // note to future Bianca: eventually change the homing speed to slower when approaching 0
@@ -37,5 +36,5 @@ void moveScrew(int amount) {
     Serial.print("Dispensing ");
     Serial.print(amount);
     Serial.println(" grams of food...");
-    // Example: stepperScrew.moveTo(amount); stepperScrew.runToPosition();
+    stepperScrew.moveTo(amount); stepperScrew.runToPosition();
 }

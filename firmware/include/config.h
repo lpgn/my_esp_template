@@ -72,7 +72,7 @@ extern int accelerationReservoir;
 extern int maxSpeedScrew;
 extern int accelerationScrew;
 
-extern int foodAmount;
+extern int stepsPerGram;
 extern int stepsMotor2;
 
 #endif

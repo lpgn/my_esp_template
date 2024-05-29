@@ -24,8 +24,7 @@ void setup() {
 }
 
 void loop() {
-    // checkFeedingSchedule();
-    nonBlockingDelay(30000, checkFeedingSchedule, lastCallTime);
+    nonBlockingDelay(60000, checkFeedingSchedule, lastCallTime);
     // Serial.println("Loop end");
     // delay(1000); // Adding a delay to avoid potential flooding of Serial output
     // stepperScrew.run();  // Regularly call this to update stepper position and handle speed/acceleration changes

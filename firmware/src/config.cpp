@@ -60,7 +60,6 @@ int accelerationReservoir = 100.0;
 int maxSpeedScrew = 50.0;
 int accelerationScrew = 100.0;
 
-int foodAmount = 100;
-int stepsMotor2 = 100;
+int stepsPerGram = 1000;
 
 

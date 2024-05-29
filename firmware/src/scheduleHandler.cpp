@@ -3,7 +3,7 @@
 // Assuming other necessary includes and global objects are already declared
 
 void checkFeedingSchedule() {
-    Serial.println("Checking feeding schedule...");
+    //Serial.println("Checking feeding schedule...");
 
     String data = readFile("/data.json");
     if (data.isEmpty()) {
@@ -11,7 +11,7 @@ void checkFeedingSchedule() {
         return;
     }
 
-    Serial.println("Successfully read data.json");
+    //Serial.println("Successfully read data.json");
 
     JsonDocument doc; // Adjust the size as needed
     DeserializationError error = deserializeJson(doc, data);
@@ -21,7 +21,7 @@ void checkFeedingSchedule() {
         return;
     }
 
-    Serial.println("Successfully parsed JSON");
+    //Serial.println("Successfully parsed JSON");
 
     // Get the current time from RTC
     RtcDateTime now = Rtc.GetDateTime();
@@ -32,8 +32,12 @@ void checkFeedingSchedule() {
     char currentTime[6];
     snprintf(currentTime, sizeof(currentTime), "%02d:%02d", now.Hour(), now.Minute());
 
-    Serial.print("Current time: ");
-    Serial.println(currentTime);
+    Serial.println("--------------------");
+    Serial.println("-   It is now:     -");
+    Serial.print  ("-      ");
+    Serial.print  (currentTime);
+    Serial.println  ("       -");
+    Serial.println("--------------------");
 
     for (JsonPair module : doc.as<JsonObject>()) {
         const char* moduleName = module.key().c_str();
@@ -42,14 +46,14 @@ void checkFeedingSchedule() {
         bool active = module.value()["active"];
         int amount_food = module.value()["amount_food"];
 
-        Serial.print("Checking module: ");
-        Serial.println(moduleName);
-        Serial.print("Time 1: ");
-        Serial.println(time1);
-        Serial.print("Time 2: ");
-        Serial.println(time2);
-        Serial.print("Active: ");
-        Serial.println(active ? "true" : "false");
+        Serial.print("It is: ");
+        Serial.print(active ? "true" : "false");
+        Serial.print(" that the feeding schedule is active for ");
+        Serial.print(moduleName);
+        Serial.print(" we will feed the cat at ");
+        Serial.print(time1);
+        Serial.print("and ");
+        Serial.print(time2);
         Serial.print("Amount of food: ");
         Serial.println(amount_food);
 
@@ -69,10 +73,9 @@ void checkFeedingSchedule() {
                 } else if (strcmp(moduleName, "module3") == 0) {
                     modulePosition = foodBay3;
                 }
-
                 Serial.println("Starting feeding process...");
                 moveReservoir(modulePosition);
-                moveScrew(amount_food);
+                moveScrew(amount_food*stepsPerGram);
                 Serial.println("Feeding process completed.");
             } else {
                 Serial.print("Not feeding time for module: ");
@@ -81,5 +84,5 @@ void checkFeedingSchedule() {
         }
     }
 
-    Serial.println("Finished checking feeding schedule");
+    // Serial.println("Finished checking feeding schedule");
 }
