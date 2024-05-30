@@ -3,4 +3,9 @@
 
 #include "config.h"
 
+void initializeStepper(); // Initializes the stepper motors
+void moveReservoir(int modulePosition);
+void moveScrew(int amount);
+
+
 #endif

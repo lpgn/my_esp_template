@@ -14,5 +14,9 @@
 bool writeFile(String path, String data);
 String readFile(String path);
 void setupStorage();
+bool writeDataJson();
+void readDataJson();
+bool readAndParseJson(String& data, JsonDocument& doc);
+
 
 #endif

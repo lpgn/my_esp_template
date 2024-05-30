@@ -5,6 +5,9 @@
 
 
 void receiveEvent(int howMany); // Receives RFID tag data from Tiny1614
-void openDoor(); // Opens the door
+void printAsciiBox(const String& message);
+void transmitOpenDoor(); // Opens the door
+
+
 
 #endif // COMMUNICATION_H

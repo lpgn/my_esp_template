@@ -38,6 +38,7 @@ extern WiFiMulti wifiMulti;
 extern AsyncWebServer server;
 extern JsonDocument doc;
 extern unsigned long lastCallTime;
+extern unsigned long lastCalibrationTime;
 
 extern const int endStopPin;
 
@@ -61,7 +62,6 @@ extern RtcDS1302<ThreeWire> Rtc;
 
 extern AccelStepper stepperReservoir;
 extern AccelStepper stepperScrew;
-extern int endstopPin;
 
 extern int foodBay1;
 extern int foodBay2;

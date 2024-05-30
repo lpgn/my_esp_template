@@ -1,40 +1,38 @@
 #include "timeHandler.h"
 
-void printCompilationTimestamp()
-{
-    Serial.println("*****************************************************");
-    Serial.println("* Function printCompilationTimestamp()");
-    Serial.printf("* Compiled on %s at %s\n\r", __DATE__, __TIME__);
-    Serial.println("*****************************************************");
+bool getCurrentTime(char* currentTime, size_t size) {
+    RtcDateTime now = Rtc.GetDateTime();
+    if (!now.IsValid()) {
+        Serial.println("Failed to retrieve valid time from RTC.");
+        return false;
+    }
+    snprintf(currentTime, size, "%02d:%02d", now.Hour(), now.Minute());
+    return true;
 }
 
+void printCompilationTimestamp() {
+    String message = "Compiled on " + String(__DATE__) + " at " + String(__TIME__);
+    printAsciiBox(message);
+}
 
-void printRtcDateTime(const RtcDateTime &dt)
-{
+void printRtcDateTime(const RtcDateTime &dt) {
     char datestring[20];
-    snprintf_P(datestring, countof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
+    snprintf_P(datestring, sizeof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
     Serial.print("RTC DateTime: ");
     Serial.println(datestring);
 }
 
-void syncInternalRtcWithExternal(const RtcDateTime &dt)
-{
+void syncInternalRtcWithExternal(const RtcDateTime &dt) {
     char datestring[20];
-    snprintf_P(datestring, countof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
+    snprintf_P(datestring, sizeof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
     rtc.setTime(dt.Second(), dt.Minute(), dt.Hour(), dt.Day(), dt.Month(), dt.Year());
 
-    Serial.println("*****************************************************");
-    Serial.println("* Function syncInternalRtcWithExternal()");
-    Serial.printf("* Time from external RTC: %s\n\r", datestring);
-    Serial.println("* This function updates the internal RTC with the time");
-    Serial.println("* from the external RTC");
-    Serial.println("*****************************************************");
+    String message = "External RTC: " + String(datestring) + "\nInternal RTC updated";
+    printAsciiBox(message);
 }
 
-void initializeRtc()
-{
-    Serial.println("*****************************************************");
-    Serial.println("* Running function initializeRtc()");
+void initializeRtc() {
+    printAsciiBox("Initializing RTC");
 
 #ifdef ds_3231
     Wire.begin(sdaPin, sclPin);
@@ -42,73 +40,60 @@ void initializeRtc()
 #endif
 
     Rtc.Begin();
-    Serial.println("* RTC begin called");
+    Serial.println("* RTC started");
 
     RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
 
-    Serial.print("* Time from internal RTC on boot: ");
+    Serial.print("* Internal RTC on boot: ");
     Serial.println(rtc.getTime("%A, %B %d %Y %H:%M:%S").c_str());
 
     RtcDateTime externalRtcTime = Rtc.GetDateTime();
     if (externalRtcTime.IsValid()) {
         syncInternalRtcWithExternal(externalRtcTime);
     } else {
-        Serial.println("* Failed to get valid time from external RTC");
+        Serial.println("* Invalid time from external RTC");
     }
 
-    Serial.print("* Time from internal RTC after external RTC update: ");
+    Serial.print("* Internal RTC after update: ");
     Serial.println(rtc.getTime("%A, %B %d %Y %H:%M:%S").c_str());
 
-    if (!Rtc.IsDateTimeValid())
-    {
-        Serial.println("* RTC lost confidence in the DateTime! Setting to compile time.");
+    if (!Rtc.IsDateTimeValid()) {
+        Serial.println("* Invalid DateTime, setting compile time");
         Rtc.SetDateTime(compiled);
     }
 
-    if (!Rtc.GetIsRunning())
-    {
-        Serial.println("* RTC was not actively running, starting now");
+    if (!Rtc.GetIsRunning()) {
+        Serial.println("* RTC not running, starting now");
         Rtc.SetIsRunning(true);
     }
 
     RtcDateTime now = Rtc.GetDateTime();
-    if (now < compiled)
-    {
-        Serial.println("* RTC is older than compile time!  (Updating DateTime)");
+    if (now < compiled) {
+        Serial.println("* RTC older than compile time, updating");
         Rtc.SetDateTime(compiled);
-    }
-    else if (now > compiled)
-    {
-        Serial.println("* RTC is newer than compile time. (This is expected)");
-    }
-    else if (now == compiled)
-    {
-        Serial.println("* RTC is the same as compile time! (Not expected but all is fine)");
+    } else if (now > compiled) {
+        Serial.println("* RTC newer than compile time");
+    } else if (now == compiled) {
+        Serial.println("* RTC matches compile time");
     }
 
-    Serial.println("* END of data from initializeRtc()");
-    Serial.println("*****************************************************");
+    printAsciiBox("RTC Initialization Complete");
 }
 
-void printRtcDateTimeInLoop()
-{
+void printRtcDateTimeInLoop() {
     static unsigned long previousMillis = 0;
     const long printTimeInterval = 1000;
 
     unsigned long currentMillis = millis();
 
-    if (currentMillis - previousMillis >= printTimeInterval)
-    {
+    if (currentMillis - previousMillis >= printTimeInterval) {
         previousMillis = currentMillis;
 
         RtcDateTime now = Rtc.GetDateTime();
-        if (now.IsValid())
-        {
+        if (now.IsValid()) {
             printRtcDateTime(now);
-        }
-        else
-        {
-            Serial.println("RTC lost confidence in the DateTime!");
+        } else {
+            Serial.println("RTC DateTime invalid!");
         }
     }
 }

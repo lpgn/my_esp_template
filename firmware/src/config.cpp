@@ -5,6 +5,7 @@ WiFiMulti wifiMulti;
 AsyncWebServer server(80);
 JsonDocument doc;
 unsigned long lastCallTime = 0;
+unsigned long lastCalibrationTime = 0;
 
 // define pin for endstop
 // this is a setup for the endstop pin
@@ -35,9 +36,6 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 // Define steppers and the pins they will use
 AccelStepper stepperReservoir(AccelStepper::DRIVER, stepperReservoirStepPin, stepperReservoirDirPin); // Ensure these are valid pins
 AccelStepper stepperScrew(AccelStepper::DRIVER, stepperScrewStepPin, stepperScrewDirPin); // Ensure these are valid pins
-// define endstop pin
-int endstopPin = 2;
-
 // variables to define foodBay position in steps since its 800 steps per revolution and there are 3 foodBays
 // 1st one is in angle 0, second in angle 60 and third in angle 120
 int foodBay1 = 0;

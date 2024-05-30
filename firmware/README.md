@@ -82,7 +82,7 @@ void loop(); // Standard Arduino loop function
 #### ESP32
 ```cpp
 void receiveEvent(int howMany); // Receives RFID tag data from Tiny1614
-void openDoor(); // Sends command to Tiny1614 to open the door
+void transmitOpenDoor(); // Sends command to Tiny1614 to open the door
 ```
 
 #### Tiny1614

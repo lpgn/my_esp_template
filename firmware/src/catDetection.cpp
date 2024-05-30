@@ -6,7 +6,7 @@ void validateCatInfo(String rfidTag) {
     Serial.println("Validating cat information...");
     Serial.println("RFID Tag: " + rfidTag);
     logCatEntry(rfidTag);
-    openDoor();
+    transmitOpenDoor();
 }
 
 void logCatEntry(String rfidTag) {

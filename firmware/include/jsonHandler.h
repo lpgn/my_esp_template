@@ -3,7 +3,6 @@
 
 #include "config.h"
 
-bool writeDataJson();
-void readDataJson();
+
 
 #endif // JSON_HANDLER_H

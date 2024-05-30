@@ -35,3 +35,38 @@ void setupStorage()
         return;
     }
 }
+
+bool writeDataJson()
+{
+    Serial.println("JSON serialize - BEGIN");
+    String jsonString;
+    serializeJson(doc, jsonString);
+    Serial.println("JSON serialize - COMPLETE");
+    return writeFile("/data.json", jsonString);
+}
+
+void readDataJson()
+{
+    Serial.println("Starting to look for JSON file");
+    String json = LittleFS.exists("/data.json") ? readFile("/data.json") : readFile("/sample.json");
+    Serial.println("JSON deserialize - BEGIN");
+    deserializeJson(doc, json);
+    Serial.println("JSON deserialize - COMPLETE");
+}
+
+bool readAndParseJson(String& data, JsonDocument& doc) {
+    data = readFile("/data.json");
+    if (data.isEmpty()) {
+        Serial.println("Failed to read data.json");
+        return false;
+    }
+
+    DeserializationError error = deserializeJson(doc, data);
+    if (error) {
+        Serial.print("Failed to parse JSON: ");
+        Serial.println(error.c_str());
+        return false;
+    }
+
+    return true;
+}

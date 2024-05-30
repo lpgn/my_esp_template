@@ -12,8 +12,8 @@ void receiveEvent(int howMany) {
     validateCatInfo(rfidTag);
 }
 
-// Function to open the door
-void openDoor() {
+// Function to transmit order to open the door
+void transmitOpenDoor() {
     // Code to open the door
     Serial.println("Opening door...");
     Wire.beginTransmission(0x04); // Address of the Tiny1614
@@ -22,4 +22,13 @@ void openDoor() {
 }
 
 
-  
+void printAsciiBox(const String& message) {
+    int length = message.length();
+    String border = "";
+    for (int i = 0; i < length + 4; ++i) {
+        border += '*';
+    }
+    Serial.println(border);
+    Serial.println("* " + message + " *");
+    Serial.println(border);
+}
