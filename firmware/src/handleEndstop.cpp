@@ -1,9 +1,5 @@
 #include "handleEndstop.h"
 
-Bounce endstopDebouncer = Bounce();
-volatile bool endstopHit = false;
-volatile bool endstopReleased = false;
-
 void setupEndstopInterrupt(int pin) {
     pinMode(pin, INPUT_PULLUP);
     endstopDebouncer.attach(pin);

@@ -11,6 +11,11 @@ unsigned long lastCalibrationTime = 0;
 // this is a setup for the endstop pin
 const int endStopPin = 42;
 
+Bounce endstopDebouncer = Bounce();
+volatile bool endstopHit = false;
+volatile bool endstopReleased = false;
+
+
 
 const char *wifi_network_hostname = "name_hostname";
 const char *soft_ap_ssid = "name_SSID";

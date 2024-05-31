@@ -44,6 +44,10 @@ extern unsigned long lastCalibrationTime;
 
 extern const int endStopPin;
 
+extern Bounce endstopDebouncer;
+extern volatile bool endstopHit;
+extern volatile bool endstopReleased;
+
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;
 extern const char *soft_ap_password;
