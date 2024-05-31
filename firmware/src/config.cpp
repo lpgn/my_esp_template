@@ -33,10 +33,10 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
 //define the pins for the steppers
-#define stepperReservoirStepPin 37
-#define stepperReservoirDirPin 38
-#define stepperScrewStepPin 39
-#define stepperScrewDirPin 40
+#define stepperReservoirStepPin 37//rocho
+#define stepperReservoirDirPin 38//marron
+#define stepperScrewStepPin 39//verde
+#define stepperScrewDirPin 40//azul
 
 // Define steppers and the pins they will use
 AccelStepper stepperReservoir(AccelStepper::DRIVER, stepperReservoirStepPin, stepperReservoirDirPin); // Ensure these are valid pins
