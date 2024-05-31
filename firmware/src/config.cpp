@@ -33,8 +33,8 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
 //define the pins for the steppers
-#define stepperReservoirStepPin 38
-#define stepperReservoirDirPin 37
+#define stepperReservoirStepPin 37
+#define stepperReservoirDirPin 38
 #define stepperScrewStepPin 39
 #define stepperScrewDirPin 40
 
