@@ -4,5 +4,10 @@
 
 #include <config.h>
 
+// Function to handle endstop interrupt
+void setupEndstopInterrupt(int pin);
+bool checkEndstopHit();
+bool checkEndstopReleased();
+void updateEndstopState();
 
 #endif

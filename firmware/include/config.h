@@ -16,6 +16,8 @@
 #include <AccelStepper.h>
 #include <AsyncJson.h>
 #include <ArduinoJson.h>
+#include <Bounce2.h>
+
 
 // Include all necessary files here
 #include "webServerManager.h"

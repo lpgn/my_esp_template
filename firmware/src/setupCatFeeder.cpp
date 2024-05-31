@@ -10,22 +10,15 @@ void setupFeeder() {
     printAsciiBox("Feeder setup complete");
 }
 
-// Function to calibrate the reservoir
+
+
 void calibrateReservoir() {
     Serial.println("Calibrating reservoir...");
-    // Move the reservoir anti-clockwise until it hits the endstop
-    while (digitalRead(endStopPin) != LOW) {
-        // Move the reservoir anti-clockwise using the AccelStepper library
+    while (digitalRead(endStopPin) != LOW && !checkEndstopHit()) {
         stepperReservoir.move(-1);
         stepperReservoir.runSpeedToPosition();
     }
-    // Set the position of the reservoir to 0
     stepperReservoir.setCurrentPosition(0);
     printAsciiBox("Reservoir calibrated");
 }
 
-void checkEndstop() {
-    if (digitalRead(endStopPin) == LOW) {
-        printAsciiBox("Endstop clicked");
-    }
-}
