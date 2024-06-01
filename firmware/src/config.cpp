@@ -23,8 +23,8 @@ const char *soft_ap_password = "name_password";
 
 #ifdef ds_3231
 RtcDS3231<TwoWire> Rtc(Wire);
-int sdaPin = 5;
-int sclPin = 4;
+int sdaPin = 4;
+int sclPin = 5;
 #endif
 
 #ifdef ds_1302
@@ -33,10 +33,10 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
 //define the pins for the steppers
-#define stepperReservoirStepPin 37//rocho
-#define stepperReservoirDirPin 38//marron
-#define stepperScrewStepPin 39//verde
-#define stepperScrewDirPin 40//azul
+#define stepperReservoirStepPin 38//
+#define stepperReservoirDirPin 37//
+#define stepperScrewStepPin 40//
+#define stepperScrewDirPin 39//
 
 // Define steppers and the pins they will use
 AccelStepper stepperReservoir(AccelStepper::DRIVER, stepperReservoirStepPin, stepperReservoirDirPin); // Ensure these are valid pins
