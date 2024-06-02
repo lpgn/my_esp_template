@@ -16,8 +16,15 @@ const int endStopPin = 6;
 Bounce endStop = Bounce();
 
 // Variables
-const int stepperReservoirPositions[] = {0, 60, 120};
-const int stepperScrewSteps = 50;
+int modulo_gumble = 0;
+int modulo_Gerry = 60;
+int modulo_Pipoca = 120;
+const int stepperReservoirPositions[] = {modulo_gumble, modulo_Gerry, modulo_Pipoca};
+
+int quantidade_Gumble = 50;
+int quantidade_Gerry = 60;
+int quantidade_Pipoca = 50;
+const int stepperScrewSteps[] = {quantidade_Gumble, quantidade_Gerry, quantidade_Pipoca};
 bool calibrated = false;
 
 // Function Prototypes
@@ -42,6 +49,8 @@ void setup() {
 
     stepperScrew.setMaxSpeed(50);
     stepperScrew.setAcceleration(100);
+
+    performTask();
 }
 
 void loop() {
@@ -75,7 +84,7 @@ void performTask() {
             stepperReservoir.run();
         }
 
-        stepperScrew.move(stepperScrewSteps);
+        stepperScrew.move(stepperScrewSteps[i]);
         while (stepperScrew.distanceToGo() != 0) {
             stepperScrew.run();
         }
