@@ -34,16 +34,15 @@ bool calibrated = false;
 // Function Prototypes
 void calibrateReservoir();
 void performTask();
+void printCurrentTime();
 
 void setup() {
     delay(30000); // 30 seconds delay to allow the serial monitor to connect
     Serial.begin(115200);
     Wire.begin();
     Rtc.Begin();
-    //PRINT TIME ON ONE LINE WITH ONE LINE OF CODE ON SERIAL MONITOR
-    Serial.println(Rtc.GetDateTime().Epoch32Time());
-
-
+    // Print time on one line with one line of code on the serial monitor
+    printCurrentTime();
 
     // Set end stop pin
     pinMode(endStopPin, INPUT_PULLUP);
@@ -68,32 +67,54 @@ void loop() {
         calibrateReservoir();
     }
 
-    if (now.Hour() == 8 && now.Minute() == 0 && now.Second() == 0) {
-        performTask();
-    } else if (now.Hour() == 18 && now.Minute() == 0 && now.Second() == 0) {
+    if ((now.Hour() == 8 && now.Minute() == 0 && now.Second() == 0) || 
+        (now.Hour() == 18 && now.Minute() == 0 && now.Second() == 0)) {
+        Serial.println("Performing scheduled task:");
+        printCurrentTime();
         performTask();
     }
 }
 
 void calibrateReservoir() {
+    Serial.println("Calibrating reservoir...");
     stepperReservoir.moveTo(-1);
     while (!endStop.read()) {
         stepperReservoir.run();
     }
     stepperReservoir.setCurrentPosition(0);
     calibrated = true;
+    Serial.println("Reservoir calibrated.");
+    printCurrentTime();
 }
 
 void performTask() {
     for (int i = 0; i < 3; i++) {
+        Serial.print("Moving reservoir to position ");
+        Serial.print(stepperReservoirPositions[i]);
+        Serial.println("...");
         stepperReservoir.moveTo(stepperReservoirPositions[i]);
         while (stepperReservoir.distanceToGo() != 0) {
             stepperReservoir.run();
         }
+        Serial.println("Reservoir in position.");
 
+        Serial.print("Moving screw for quantity ");
+        Serial.print(stepperScrewSteps[i]);
+        Serial.println("...");
         stepperScrew.move(stepperScrewSteps[i]);
         while (stepperScrew.distanceToGo() != 0) {
             stepperScrew.run();
         }
+        Serial.println("Screw movement complete.");
     }
+    Serial.println("Task completed.");
+    printCurrentTime();
+}
+
+void printCurrentTime() {
+    RtcDateTime now = Rtc.GetDateTime();
+    char timeBuffer[20];
+    snprintf(timeBuffer, sizeof(timeBuffer), "%04u-%02u-%02u %02u:%02u:%02u", 
+             now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second());
+    Serial.println(timeBuffer);
 }
