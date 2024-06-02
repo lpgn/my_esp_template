@@ -1,39 +1,81 @@
-#include "config.h"
+#include <Arduino.h>
+#include <Wire.h>
+#include <RtcDS3231.h>
+#include <AccelStepper.h>
+#include <Bounce2.h>
+
+// RTC
+RtcDS3231<TwoWire> Rtc(Wire);
+
+// Stepper Motors
+AccelStepper stepperReservoir(AccelStepper::DRIVER, 2, 3); // DIR, STEP pins
+AccelStepper stepperScrew(AccelStepper::DRIVER, 4, 5); // DIR, STEP pins
+
+// End Stop
+const int endStopPin = 6;
+Bounce endStop = Bounce();
+
+// Variables
+const int stepperReservoirPositions[] = {0, 60, 120};
+const int stepperScrewSteps = 50;
+bool calibrated = false;
+
+// Function Prototypes
+void calibrateReservoir();
+void performTask();
 
 void setup() {
     Serial.begin(115200);
-    setupStorage();
-    configureWiFiSettings();
-    scanAvailableWiFiNetworks();
-    initiateWiFiConnection();
-    printCompilationTimestamp();
-    initializeRtc();
-    initializeServer();
-    serverHandle();
-    setupEndstopInterrupt(endStopPin);
-    initializeStepper();
-     // Start the system
-    setupFeeder();
+    Wire.begin();
+    Rtc.Begin();
+
+    // Set end stop pin
+    pinMode(endStopPin, INPUT_PULLUP);
+    endStop.attach(endStopPin);
+    endStop.interval(50);
+
+    // Stepper motor setup
+    stepperReservoir.setMaxSpeed(1000);
+    stepperReservoir.setAcceleration(500);
+
+    stepperScrew.setMaxSpeed(1000);
+    stepperScrew.setAcceleration(500);
 }
 
 void loop() {
-    updateEndstopState(); // Update the endstop state
+    RtcDateTime now = Rtc.GetDateTime();
+    endStop.update();
 
-    // Other tasks...
-    if (checkEndstopHit()) {
-        printAsciiBox("Endstop clicked!");
-        // Handle endstop hit event, e.g., stop stepper or take corrective action
+    if (!calibrated) {
+        calibrateReservoir();
     }
-    if (checkEndstopReleased()) {
-        printAsciiBox("Endstop released!");
-        // Handle endstop release event, if any action is needed
+
+    if (now.Hour() == 8 && now.Minute() == 0 && now.Second() == 0) {
+        performTask();
+    } else if (now.Hour() == 18 && now.Minute() == 0 && now.Second() == 0) {
+        performTask();
     }
-    //run calibration routine every day 2 times a day
-    nonBlockingDelay(43200000, calibrateReservoir, lastCalibrationTime);
-    // Non-blocking delay with callback
-    nonBlockingDelay(60000, checkFeedingSchedule, lastCallTime);
-    // checking if Cat is at the door
-    // validateCatInfo(rfidTag);
-    // log cat entry
-    // logCatEntry(rfidTag);
+}
+
+void calibrateReservoir() {
+    stepperReservoir.moveTo(-1);
+    while (!endStop.read()) {
+        stepperReservoir.run();
+    }
+    stepperReservoir.setCurrentPosition(0);
+    calibrated = true;
+}
+
+void performTask() {
+    for (int i = 0; i < 3; i++) {
+        stepperReservoir.moveTo(stepperReservoirPositions[i]);
+        while (stepperReservoir.distanceToGo() != 0) {
+            stepperReservoir.run();
+        }
+
+        stepperScrew.move(stepperScrewSteps);
+        while (stepperScrew.distanceToGo() != 0) {
+            stepperScrew.run();
+        }
+    }
 }
