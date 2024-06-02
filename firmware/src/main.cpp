@@ -13,9 +13,9 @@ RtcDS3231<TwoWire> Rtc(Wire);
 
 // Stepper Motors
 // DIR, STEP, enable pins
-AccelStepper stepperReservoir(AccelStepper::DRIVER, 13, 40, 12);
+AccelStepper stepperReservoir(AccelStepper::DRIVER, 13, 40, 7);
 // DIR, STEP,enable pins
-AccelStepper stepperScrew(AccelStepper::DRIVER, 37, 38, 36);
+AccelStepper stepperScrew(AccelStepper::DRIVER, 37, 38, 21);
 
 // End Stop
 const int endStopPin = 42;
