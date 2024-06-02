@@ -11,7 +11,7 @@
 // RTC
 RtcDS3231<TwoWire> Rtc(Wire);
 
-// Stepper Motors
+// Stepper Motors Pins
 int dirReservoir = 2, stepReservoir = 3;
 int dirScrew = 4, stepScrew = 5;
 AccelStepper stepperReservoir(AccelStepper::DRIVER, stepReservoir, dirReservoir); // Default pins: DIR, STEP
@@ -60,22 +60,25 @@ void handleSaveSettings() {
         dirReservoir = newDirReservoir;
         stepReservoir = newStepReservoir;
         stepperReservoir = AccelStepper(AccelStepper::DRIVER, stepReservoir, dirReservoir);
-        stepperReservoir.setMaxSpeed(1000);
-        stepperReservoir.setAcceleration(500);
+        stepperReservoir.setMaxSpeed(50);
+        stepperReservoir.setAcceleration(100);
+        Serial.println("Updated stepperReservoir pins");
     }
 
     if (newDirScrew != dirScrew || newStepScrew != stepScrew) {
         dirScrew = newDirScrew;
         stepScrew = newStepScrew;
         stepperScrew = AccelStepper(AccelStepper::DRIVER, stepScrew, dirScrew);
-        stepperScrew.setMaxSpeed(1000);
-        stepperScrew.setAcceleration(500);
+        stepperScrew.setMaxSpeed(50);
+        stepperScrew.setAcceleration(100);
+        Serial.println("Updated stepperScrew pins");
     }
 
     endStopPin = doc["endStopPin"];
     endStop.attach(endStopPin, INPUT_PULLUP);
 
     server.send(200, "text/plain", "Settings Saved");
+    Serial.println("Settings saved");
 
     // Reset calibration since pins might have changed
     calibrated = false;
@@ -95,9 +98,10 @@ void setup() {
         Serial.println("An error has occurred while mounting LittleFS");
         return;
     }
+    Serial.println("LittleFS mounted successfully");
 
     // Set up WiFi
-    WiFi.begin("your-SSID", "your-PASSWORD");
+    WiFi.begin("quarto_casal", "imgrumpy");
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
         Serial.println("Connecting to WiFi...");
@@ -116,11 +120,13 @@ void setup() {
     endStop.interval(10);
 
     // Stepper motor setup
-    stepperReservoir.setMaxSpeed(1000);
-    stepperReservoir.setAcceleration(500);
+    stepperReservoir.setMaxSpeed(50);
+    stepperReservoir.setAcceleration(100);
 
-    stepperScrew.setMaxSpeed(1000);
-    stepperScrew.setAcceleration(500);
+    stepperScrew.setMaxSpeed(50);
+    stepperScrew.setAcceleration(100);
+
+    Serial.println("Setup completed");
 }
 
 void loop() {
@@ -130,12 +136,16 @@ void loop() {
     endStop.update();
 
     if (!calibrated) {
+        Serial.println("Calibrating reservoir...");
         calibrateReservoir();
+        Serial.println("Reservoir calibrated");
     }
 
     if (now.Hour() == 8 && now.Minute() == 0 && now.Second() == 0) {
+        Serial.println("Performing task at 8 AM");
         performTask();
     } else if (now.Hour() == 18 && now.Minute() == 0 && now.Second() == 0) {
+        Serial.println("Performing task at 6 PM");
         performTask();
     }
 }
@@ -155,10 +165,15 @@ void performTask() {
         while (stepperReservoir.distanceToGo() != 0) {
             stepperReservoir.run();
         }
+        Serial.print("Moved stepperReservoir to position ");
+        Serial.println(stepperReservoirPositions[i]);
 
         stepperScrew.move(stepperScrewSteps);
         while (stepperScrew.distanceToGo() != 0) {
             stepperScrew.run();
         }
+        Serial.print("Moved stepperScrew by ");
+        Serial.print(stepperScrewSteps);
+        Serial.println(" steps");
     }
 }
