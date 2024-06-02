@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stepper Motor Control</title>
+</head>
+<body>
+    <h1>Stepper Motor Control</h1>
+    <form id="settingsForm">
+        <label for="stepperReservoirPos">Stepper Reservoir Positions (comma-separated):</label>
+        <input type="text" id="stepperReservoirPos" name="stepperReservoirPos" value="0,60,120"><br>
+        
+        <label for="stepperScrewSteps">Stepper Screw Steps:</label>
+        <input type="number" id="stepperScrewSteps" name="stepperScrewSteps" value="50"><br>
+        
+        <label for="stepperReservoirPins">Stepper Reservoir Pins (DIR,STEP):</label>
+        <input type="text" id="stepperReservoirPins" name="stepperReservoirPins" value="2,3"><br>
+        
+        <label for="stepperScrewPins">Stepper Screw Pins (DIR,STEP):</label>
+        <input type="text" id="stepperScrewPins" name="stepperScrewPins" value="4,5"><br>
+        
+        <label for="endStopPin">End Stop Pin:</label>
+        <input type="number" id="endStopPin" name="endStopPin" value="6"><br>
+
+        <input type="submit" value="Save Settings">
+    </form>
+
+    <script>
+        document.getElementById('settingsForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const settings = {};
+            formData.forEach((value, key) => {
+                settings[key] = value;
+            });
+
+            const response = await fetch('/saveSettings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settings)
+            });
+
+            if (response.ok) {
+                alert('Settings saved successfully!');
+            } else {
+                alert('Failed to save settings.');
+            }
+        };
+    </script>
+</body>
+</html>
