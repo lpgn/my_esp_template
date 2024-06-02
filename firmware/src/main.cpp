@@ -4,15 +4,19 @@
 #include <AccelStepper.h>
 #include <Bounce2.h>
 
+// Define the pins for SDA and SCL
+#define SDA 4
+#define SCL 5
+
 // RTC
 RtcDS3231<TwoWire> Rtc(Wire);
 
 // Stepper Motors
-AccelStepper stepperReservoir(AccelStepper::DRIVER, 2, 3); // DIR, STEP pins
-AccelStepper stepperScrew(AccelStepper::DRIVER, 4, 5); // DIR, STEP pins
+AccelStepper stepperReservoir(AccelStepper::DRIVER, 13, 40); // DIR, STEP pins
+AccelStepper stepperScrew(AccelStepper::DRIVER, 37, 38); // DIR, STEP pins
 
 // End Stop
-const int endStopPin = 6;
+const int endStopPin = 42;
 Bounce endStop = Bounce();
 
 // Variables
@@ -32,11 +36,14 @@ void calibrateReservoir();
 void performTask();
 
 void setup() {
+    delay(30000); // 30 seconds delay to allow the serial monitor to connect
     Serial.begin(115200);
     Wire.begin();
     Rtc.Begin();
     //PRINT TIME ON ONE LINE WITH ONE LINE OF CODE ON SERIAL MONITOR
-    Serial.println("Current Time: " + RtcDateTime(Rtc.GetDateTime()).String());
+    Serial.println(Rtc.GetDateTime().Epoch32Time());
+
+
 
     // Set end stop pin
     pinMode(endStopPin, INPUT_PULLUP);
