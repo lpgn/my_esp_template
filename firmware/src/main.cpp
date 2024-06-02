@@ -28,6 +28,8 @@ void setup() {
     Serial.begin(115200);
     Wire.begin();
     Rtc.Begin();
+    //PRINT TIME ON ONE LINE WITH ONE LINE OF CODE ON SERIAL MONITOR
+    Serial.println("Current Time: " + RtcDateTime(Rtc.GetDateTime()).String());
 
     // Set end stop pin
     pinMode(endStopPin, INPUT_PULLUP);
@@ -35,11 +37,11 @@ void setup() {
     endStop.interval(50);
 
     // Stepper motor setup
-    stepperReservoir.setMaxSpeed(1000);
-    stepperReservoir.setAcceleration(500);
+    stepperReservoir.setMaxSpeed(50);
+    stepperReservoir.setAcceleration(100);
 
-    stepperScrew.setMaxSpeed(1000);
-    stepperScrew.setAcceleration(500);
+    stepperScrew.setMaxSpeed(50);
+    stepperScrew.setAcceleration(100);
 }
 
 void loop() {
