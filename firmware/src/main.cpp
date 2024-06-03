@@ -39,7 +39,7 @@ void performTask();
 void printCurrentTime();
 
 void setup() {
-    delay(30000); // 30 seconds delay to allow the serial monitor to connect
+    delay(5000); // 30 seconds delay to allow the serial monitor to connect
     Serial.begin(115200);
     Wire.begin();
     Rtc.Begin();
