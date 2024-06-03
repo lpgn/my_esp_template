@@ -19,8 +19,8 @@ const char *soft_ap_password = "name_password";
 
 #ifdef ds_3231
 RtcDS3231<TwoWire> Rtc(Wire);
-int sdaPin = 5;
-int sclPin = 4;
+int sdaPin = 4;
+int sclPin = 5;
 #endif
 
 #ifdef ds_1302
