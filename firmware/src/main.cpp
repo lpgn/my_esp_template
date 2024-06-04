@@ -15,13 +15,13 @@ const char *password = "newgerryforever2018";
 
 // Stepper Motors
 // DIR, STEP, enable pins
-#define DIR_PIN_RESERVOIR 13
-#define STEP_PIN_RESERVOIR 12
-#define ENABLE_PIN_RESERVOIR 14
+#define DIR_PIN_RESERVOIR 8
+#define STEP_PIN_RESERVOIR 3
+#define ENABLE_PIN_RESERVOIR 46
 
-#define DIR_PIN_SCREW 37
-#define STEP_PIN_SCREW 38
-#define ENABLE_PIN_SCREW 21
+#define DIR_PIN_SCREW 17
+#define STEP_PIN_SCREW 16
+#define ENABLE_PIN_SCREW 18
 
 FastAccelStepperEngine engine = FastAccelStepperEngine();
 FastAccelStepper *stepperReservoir = NULL;
@@ -37,13 +37,13 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", 0, 60000); // Update every minute
 
 // Variables
 int modulo_gumble = 0;
-int modulo_Gerry = 60;
-int modulo_Pipoca = 120;
+int modulo_Gerry = 720;
+int modulo_Pipoca = 960;
 const int stepperReservoirPositions[] = {modulo_gumble, modulo_Gerry, modulo_Pipoca};
 
-int quantidade_Gumble = 50;
-int quantidade_Gerry = 60;
-int quantidade_Pipoca = 50;
+int quantidade_Gumble = 400;
+int quantidade_Gerry = 720;
+int quantidade_Pipoca = 400;
 const int stepperScrewSteps[] = {quantidade_Gumble, quantidade_Gerry, quantidade_Pipoca};
 bool calibrated = false;
 
@@ -75,16 +75,16 @@ void setup() {
         stepperReservoir->setDirectionPin(DIR_PIN_RESERVOIR);
         stepperReservoir->setEnablePin(ENABLE_PIN_RESERVOIR);
         stepperReservoir->setAutoEnable(true);
-        stepperReservoir->setSpeedInHz(100);  // Set speed in Hz
-        stepperReservoir->setAcceleration(100);
+        stepperReservoir->setSpeedInHz(500);  // Set speed in Hz
+        stepperReservoir->setAcceleration(500);
     }
 
     if (stepperScrew) {
         stepperScrew->setDirectionPin(DIR_PIN_SCREW);
         stepperScrew->setEnablePin(ENABLE_PIN_SCREW);
         stepperScrew->setAutoEnable(true);
-        stepperScrew->setSpeedInHz(100);  // Set speed in Hz
-        stepperScrew->setAcceleration(100);
+        stepperScrew->setSpeedInHz(500);  // Set speed in Hz
+        stepperScrew->setAcceleration(500);
     }
 
     // Perform initial stepper movement
