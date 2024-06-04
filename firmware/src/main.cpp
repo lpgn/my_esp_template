@@ -16,8 +16,8 @@ const char *password = "newgerryforever2018";
 // Stepper Motors
 // DIR, STEP, enable pins
 #define DIR_PIN_RESERVOIR 13
-#define STEP_PIN_RESERVOIR 40
-#define ENABLE_PIN_RESERVOIR 7
+#define STEP_PIN_RESERVOIR 12
+#define ENABLE_PIN_RESERVOIR 14
 
 #define DIR_PIN_SCREW 37
 #define STEP_PIN_SCREW 38
