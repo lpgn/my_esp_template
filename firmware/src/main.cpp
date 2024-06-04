@@ -1,15 +1,17 @@
 #include <Arduino.h>
-#include <Wire.h>
-#include <RtcDS3231.h>
+#include <WiFi.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 #include <FastAccelStepper.h>
 #include <Bounce2.h>
+
+// WiFi credentials
+const char *ssid = "ratinho_do_malandro";
+const char *password = "newgerryforever2018";
 
 // Define the pins for SDA and SCL
 #define SDA 4
 #define SCL 5
-
-// RTC
-RtcDS3231<TwoWire> Rtc(Wire);
 
 // Stepper Motors
 // DIR, STEP, enable pins
@@ -29,6 +31,10 @@ FastAccelStepper *stepperScrew = NULL;
 const int endStopPin = 42;
 Bounce endStop = Bounce();
 
+// NTP Client
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", 0, 60000); // Update every minute
+
 // Variables
 int modulo_gumble = 0;
 int modulo_Gerry = 60;
@@ -46,14 +52,14 @@ void calibrateReservoir();
 void performTask();
 void printCurrentTime();
 void initialStepperMovement();
+void connectToWiFi();
 
 void setup() {
     delay(5000); // 30 seconds delay to allow the serial monitor to connect
     Serial.begin(115200);
-    Wire.begin();
-    Rtc.Begin();
-    // Print time on one line with one line of code on the serial monitor
-    printCurrentTime();
+
+    connectToWiFi();
+    timeClient.begin();
 
     // Set end stop pin
     pinMode(endStopPin, INPUT_PULLUP);
@@ -88,15 +94,19 @@ void setup() {
 }
 
 void loop() {
-    RtcDateTime now = Rtc.GetDateTime();
+    timeClient.update();
     endStop.update();
 
     if (!calibrated) {
         calibrateReservoir();
     }
 
-    if ((now.Hour() == 8 && now.Minute() == 0 && now.Second() == 0) || 
-        (now.Hour() == 18 && now.Minute() == 0 && now.Second() == 0)) {
+    int currentHour = timeClient.getHours();
+    int currentMinute = timeClient.getMinutes();
+    int currentSecond = timeClient.getSeconds();
+
+    if ((currentHour == 8 && currentMinute == 0 && currentSecond == 0) || 
+        (currentHour == 18 && currentMinute == 0 && currentSecond == 0)) {
         Serial.println("Performing scheduled task:");
         printCurrentTime();
         performTask();
@@ -140,10 +150,9 @@ void performTask() {
 }
 
 void printCurrentTime() {
-    RtcDateTime now = Rtc.GetDateTime();
     char timeBuffer[20];
     snprintf(timeBuffer, sizeof(timeBuffer), "%04u-%02u-%02u %02u:%02u:%02u", 
-             now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second());
+             timeClient.getEpochTime(), timeClient.getEpochTime(), timeClient.getEpochTime(), timeClient.getHours(), timeClient.getMinutes(), timeClient.getSeconds());
     Serial.println(timeBuffer);
 }
 
@@ -173,4 +182,14 @@ void initialStepperMovement() {
     }
 
     Serial.println("Initial stepper movement complete.");
+}
+
+void connectToWiFi() {
+    Serial.print("Connecting to WiFi");
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println(" connected!");
 }
