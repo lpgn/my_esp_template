@@ -55,7 +55,7 @@ void initialStepperMovement();
 void connectToWiFi();
 
 void setup() {
-    delay(5000); // 30 seconds delay to allow the serial monitor to connect
+    delay(5000); // Delay to allow the serial monitor to connect
     Serial.begin(115200);
 
     connectToWiFi();
@@ -150,10 +150,9 @@ void performTask() {
 }
 
 void printCurrentTime() {
-    char timeBuffer[20];
-    snprintf(timeBuffer, sizeof(timeBuffer), "%04u-%02u-%02u %02u:%02u:%02u", 
-             timeClient.getEpochTime(), timeClient.getEpochTime(), timeClient.getEpochTime(), timeClient.getHours(), timeClient.getMinutes(), timeClient.getSeconds());
-    Serial.println(timeBuffer);
+    Serial.print("Current time: ");
+    Serial.print(timeClient.getFormattedTime());
+    Serial.println();
 }
 
 void initialStepperMovement() {
