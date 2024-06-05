@@ -33,10 +33,13 @@ RtcDS1302<ThreeWire> Rtc(myWire);
 #endif
 
 //define the pins for the steppers
-#define stepperReservoirStepPin 38//
-#define stepperReservoirDirPin 37//
-#define stepperScrewStepPin 40//
-#define stepperScrewDirPin 39//
+#define stepperReservoirDirPin 8//17
+#define stepperReservoirStepPin 3//16
+#define stepperScrewEnablePin 46//18
+
+#define stepperScrewDirPin 17//8
+#define stepperScrewStepPin 16//3
+#define stepperScrewEnablePin 18//46
 
 // Define steppers and the pins they will use
 AccelStepper stepperReservoir(AccelStepper::DRIVER, stepperReservoirStepPin, stepperReservoirDirPin); // Ensure these are valid pins
@@ -44,16 +47,16 @@ AccelStepper stepperScrew(AccelStepper::DRIVER, stepperScrewStepPin, stepperScre
 // variables to define foodBay position in steps since its 800 steps per revolution and there are 3 foodBays
 // 1st one is in angle 0, second in angle 60 and third in angle 120
 int foodBay1 = 0;
-// foodBay 2 is in angle 60 so it needs to move 200/360*60 = 33.33
-int foodBay2 = 33;
-// foodBay 3 is in angle 120 so it needs to move 200/360*120 = 66.66
-int foodBay3 = 67;
+// foodBay 2 is in angle 60 so it needs to move 1600/360*60 = 266.66
+int foodBay2 = 266;
+// foodBay 3 is in angle 120 so it needs to move 1600/360*120 = 533.33
+int foodBay3 = 533;
 
-int maxSpeedReservoir = 50.0;
-int accelerationReservoir = 100.0;
-int maxSpeedScrew = 50.0;
-int accelerationScrew = 100.0;
+int maxSpeedReservoir = 1500.0;
+int accelerationReservoir = 5000.0;
+int maxSpeedScrew = 500.0;
+int accelerationScrew = 500.0;
 
-int stepsPerGram = 10;
+int stepsPerGram = 40;
 
 
