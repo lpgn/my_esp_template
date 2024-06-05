@@ -52,7 +52,7 @@ int foodBay2 = 266;
 // foodBay 3 is in angle 120 so it needs to move 1600/360*120 = 533.33
 int foodBay3 = 533;
 
-int maxSpeedReservoir = 1500.0;
+int maxSpeedReservoir = 2500.0;
 int accelerationReservoir = 5000.0;
 int maxSpeedScrew = 500.0;
 int accelerationScrew = 500.0;
