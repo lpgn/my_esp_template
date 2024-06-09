@@ -1,5 +1,10 @@
 #include "timeHandler.h"
 
+// Helper function to print date and time
+void formatDateTime(const RtcDateTime &dt, char* buffer, size_t size) {
+    snprintf_P(buffer, size, PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
+}
+
 bool getCurrentTime(char* currentTime, size_t size) {
     RtcDateTime now = Rtc.GetDateTime();
     if (!now.IsValid()) {
@@ -10,28 +15,23 @@ bool getCurrentTime(char* currentTime, size_t size) {
     return true;
 }
 
-void printCompilationTimestamp() {
-    String message = "Compiled on " + String(__DATE__) + " at " + String(__TIME__);
-    printAsciiBox(message);
-}
-
 void printRtcDateTime(const RtcDateTime &dt) {
     char datestring[20];
-    snprintf_P(datestring, sizeof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
+    formatDateTime(dt, datestring, sizeof(datestring));
     Serial.print("RTC DateTime: ");
     Serial.println(datestring);
 }
 
 void syncInternalRtcWithExternal(const RtcDateTime &dt) {
     char datestring[20];
-    snprintf_P(datestring, sizeof(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(), dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
+    formatDateTime(dt, datestring, sizeof(datestring));
     rtc.setTime(dt.Second(), dt.Minute(), dt.Hour(), dt.Day(), dt.Month(), dt.Year());
 
-    String message = "External RTC: " + String(datestring) + "\nInternal RTC updated";
-    printAsciiBox(message);
+    printAsciiBox("External RTC: " + String(datestring) + "\nInternal RTC updated");
 }
 
 void initializeRtc() {
+    printAsciiBox("Compiled on " + String(__DATE__) + " at " + String(__TIME__));
     printAsciiBox("Initializing RTC");
 
     Wire.begin(sdaPin, sclPin);

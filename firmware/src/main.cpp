@@ -6,7 +6,6 @@ void setup() {
     configureWiFiSettings();
     scanAvailableWiFiNetworks();
     initiateWiFiConnection();
-    printCompilationTimestamp();
     initializeRtc();
     initializeServer();
     serverHandle();

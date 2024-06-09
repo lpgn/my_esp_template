@@ -1,6 +1,5 @@
 #include "feedingMechanism.h"
 
-
 void moveAndFeed(int modulePosition, int amount_food) {
     Serial.println("Starting feeding process...");
     Serial.printf("Moving reservoir to position %d\n", modulePosition);
