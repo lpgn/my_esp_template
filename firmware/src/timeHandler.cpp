@@ -16,8 +16,7 @@ void syncInternalRtcWithExternal(const RtcDateTime &dt) {
 
 // Function to initialize the RTC
 void initializeRtc() {
-    // Print compilation time
-    printAsciiBox("Compiled on " + String(__DATE__) + " at " + String(__TIME__));
+    printCompileTime();
     printAsciiBox("Initializing RTC");
 
     // Initialize I2C communication
@@ -69,4 +68,20 @@ void initializeRtc() {
     }
 
     printAsciiBox("RTC Initialization Complete");
+}
+void printCompileTime()
+{
+    // Print compilation time
+    printAsciiBox("Compiled on " + String(__DATE__) + " at " + String(__TIME__));
+}
+
+// Function to get the current time as a string
+bool getCurrentTime(char* currentTime, size_t size) {
+    RtcDateTime now = Rtc.GetDateTime();
+    if (!now.IsValid()) {
+        Serial.println("Failed to retrieve valid time from RTC.");
+        return false;
+    }
+    snprintf(currentTime, size, "%02d:%02d", now.Hour(), now.Minute());
+    return true;
 }

@@ -3,9 +3,9 @@
 
 #include "config.h"
 void formatDateTime(const RtcDateTime &dt, char* buffer, size_t size);
-void printRtcDateTime(const RtcDateTime &dt);
 void syncInternalRtcWithExternal(const RtcDateTime &dt);
 void initializeRtc();
-bool getCurrentTime(char* currentTime, size_t currentTimeSize);
+void printCompileTime();
+bool getCurrentTime(char *currentTime, size_t size);
 
 #endif // WIFIHANDLER_H
