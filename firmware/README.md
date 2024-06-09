@@ -82,7 +82,7 @@ void loop(); // Standard Arduino loop function
 #### ESP32
 ```cpp
 void receiveEvent(int howMany); // Receives RFID tag data from Tiny1614
-void openDoor(); // Sends command to Tiny1614 to open the door
+void transmitOpenDoor(); // Sends command to Tiny1614 to open the door
 ```
 
 #### Tiny1614
@@ -104,7 +104,6 @@ void logCatEntry(String rfidTag); // Logs the cat's entry time and RFID tag info
 
 #### ESP32
 ```cpp
-void determineFoodAmount(); // Determines the required amount of food
 void rotateReservoir(); // Rotates the reservoir to the correct position
 void rotateFeedScrew(); // Rotates the feed screw to dispense food
 void loadFood(); // Handles the entire feeding process

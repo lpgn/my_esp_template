@@ -17,7 +17,7 @@ header, footer {
     height: 50px;
 }
 
-section {
+section, aside {
     padding: 20px;
     margin-top: 20px;
 }
@@ -32,4 +32,39 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+    header, footer {
+        text-align: left;
+        padding: 10px;
+    }
+
+    table, th, td {
+        font-size: 0.8em;
+        padding: 5px;
+    }
+
+    th, td {
+        display: block;
+        text-align: left;
+        width: 100%;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    td {
+        border-top: none;
+    }
+
+    .logo {
+        height: 30px;
+    }
+
+    section, aside {
+        padding: 10px;
+        margin-top: 10px;
+    }
 }
