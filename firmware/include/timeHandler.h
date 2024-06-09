@@ -6,7 +6,6 @@ void formatDateTime(const RtcDateTime &dt, char* buffer, size_t size);
 void printRtcDateTime(const RtcDateTime &dt);
 void syncInternalRtcWithExternal(const RtcDateTime &dt);
 void initializeRtc();
-void printRtcDateTimeInLoop();
 bool getCurrentTime(char* currentTime, size_t currentTimeSize);
 
 #endif // WIFIHANDLER_H

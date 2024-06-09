@@ -77,21 +77,3 @@ void initializeRtc() {
 
     printAsciiBox("RTC Initialization Complete");
 }
-
-void printRtcDateTimeInLoop() {
-    static unsigned long previousMillis = 0;
-    const long printTimeInterval = 1000;
-
-    unsigned long currentMillis = millis();
-
-    if (currentMillis - previousMillis >= printTimeInterval) {
-        previousMillis = currentMillis;
-
-        RtcDateTime now = Rtc.GetDateTime();
-        if (now.IsValid()) {
-            printRtcDateTime(now);
-        } else {
-            Serial.println("RTC DateTime invalid!");
-        }
-    }
-}
