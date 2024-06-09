@@ -12,25 +12,14 @@ unsigned long lastCalibrationTime = 0;
 const int endStopPin = 42;
 
 Bounce endstopDebouncer = Bounce();
-volatile bool endstopHit = false;
-volatile bool endstopReleased = false;
-
-
 
 const char *wifi_network_hostname = "name_hostname";
 const char *soft_ap_ssid = "name_SSID";
 const char *soft_ap_password = "name_password";
 
-#ifdef ds_3231
 RtcDS3231<TwoWire> Rtc(Wire);
 int sdaPin = 4;
 int sclPin = 5;
-#endif
-
-#ifdef ds_1302
-ThreeWire myWire(14, 13, 32);
-RtcDS1302<ThreeWire> Rtc(myWire);
-#endif
 
 //define the pins for the steppers
 #define stepperReservoirDirPin 8//17

@@ -34,11 +34,9 @@ void syncInternalRtcWithExternal(const RtcDateTime &dt) {
 void initializeRtc() {
     printAsciiBox("Initializing RTC");
 
-#ifdef ds_3231
     Wire.begin(sdaPin, sclPin);
     Serial.println("* I2C initialized for DS3231");
-#endif
-
+    
     Rtc.Begin();
     Serial.println("* RTC started");
 
