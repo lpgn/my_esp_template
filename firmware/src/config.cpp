@@ -1,25 +1,27 @@
 #include "config.h"
 
 ESP32Time rtc;
-WiFiMulti wifiMulti;
-AsyncWebServer server(80);
-JsonDocument doc;
-unsigned long lastCallTime = 0;
-unsigned long lastCalibrationTime = 0;
-
-// define pin for endstop
-// this is a setup for the endstop pin
-const int endStopPin = 42;
-
-Bounce endstopDebouncer = Bounce();
-
-const char *wifi_network_hostname = "name_hostname";
-const char *soft_ap_ssid = "name_SSID";
-const char *soft_ap_password = "name_password";
 
 RtcDS3231<TwoWire> Rtc(Wire);
 int sdaPin = 4;
 int sclPin = 5;
+
+WiFiMulti wifiMulti;
+const char *wifi_network_hostname = "name_hostname";
+const char *soft_ap_ssid = "name_SSID";
+const char *soft_ap_password = "name_password";
+
+AsyncWebServer server(80);
+
+JsonDocument doc;
+
+unsigned long lastCallTime = 0;
+unsigned long lastCalibrationTime = 0;
+
+// define pin for endstop
+const int endStopPin = 42;
+
+Bounce endstopDebouncer = Bounce();
 
 //define the pins for the steppers
 #define stepperReservoirDirPin 8//17

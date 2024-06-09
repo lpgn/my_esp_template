@@ -36,22 +36,28 @@
 
 
 extern ESP32Time rtc;
-extern WiFiMulti wifiMulti;
-extern AsyncWebServer server;
-extern JsonDocument doc;
-extern unsigned long lastCallTime;
-extern unsigned long lastCalibrationTime;
 
-extern const int endStopPin;
-extern Bounce endstopDebouncer;
+extern RtcDS3231<TwoWire> Rtc;
+extern int sdaPin;
+extern int sclPin;
+
+extern WiFiMulti wifiMulti;
 
 extern const char *wifi_network_hostname;
 extern const char *soft_ap_ssid;
 extern const char *soft_ap_password;
 
-extern RtcDS3231<TwoWire> Rtc;
-extern int sdaPin;
-extern int sclPin;
+extern AsyncWebServer server;
+
+extern JsonDocument doc;
+
+extern unsigned long lastCallTime;
+extern unsigned long lastCalibrationTime;
+
+extern const int endStopPin;
+
+extern Bounce endstopDebouncer;
+
 
 extern AccelStepper stepperReservoir;
 extern AccelStepper stepperScrew;
@@ -66,6 +72,5 @@ extern int maxSpeedScrew;
 extern int accelerationScrew;
 
 extern int stepsPerGram;
-extern int stepsMotor2;
 
 #endif
