@@ -24,14 +24,8 @@
 #include "wiFiHandler.h"
 #include "storageHandler.h"
 #include "timeHandler.h"
-#include "stepperMove.h"
 #include "templates.tpp"
-#include "handleEndstop.h"
 #include "communication.h"
-#include "catDetection.h"
-#include "setupCatFeeder.h"
-#include "feedingMechanism.h"
-#include "scheduleHandler.h"
 #include "jsonHandler.h"
 
 
@@ -53,24 +47,5 @@ extern JsonDocument doc;
 
 extern unsigned long lastCallTime;
 extern unsigned long lastCalibrationTime;
-
-extern const int endStopPin;
-
-extern Bounce endstopDebouncer;
-
-
-extern AccelStepper stepperReservoir;
-extern AccelStepper stepperScrew;
-
-extern int foodBay1;
-extern int foodBay2;
-extern int foodBay3;
-
-extern int maxSpeedReservoir;
-extern int accelerationReservoir;
-extern int maxSpeedScrew;
-extern int accelerationScrew;
-
-extern int stepsPerGram;
 
 #endif
