@@ -1,5 +1,5 @@
 #include "wiFiHandler.h"
-
+// this file is used to handle the wifi connection and the server by connecting to the wifi and setting up the server with the correct settings from the config file an dthe credentials file
 void printAccessPointIP()
 {
     Serial.println();

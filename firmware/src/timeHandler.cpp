@@ -1,5 +1,5 @@
 #include "timeHandler.h"
-
+// this file is used to handle the time and date by syncing the internal RTC with the external RTC and printing the time
 bool getCurrentTime(char* currentTime, size_t size) {
     RtcDateTime now = Rtc.GetDateTime();
     if (!now.IsValid()) {

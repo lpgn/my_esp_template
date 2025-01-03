@@ -1,5 +1,5 @@
 #include <scheduleHandler.h>
-
+// this file is used to check the feeding schedule and feed the cats when it is time
 // Generic function to check if the current time matches any of the given times
 bool isItTime(const char* currentTime, const char* times[], size_t numTimes) {
     for (size_t i = 0; i < numTimes; ++i) {

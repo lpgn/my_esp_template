@@ -34,8 +34,8 @@
 #include "scheduleHandler.h"
 #include "jsonHandler.h"
 
-
-extern ESP32Time rtc;
+// ext
+extern ESP32Time rtc; 
 extern WiFiMulti wifiMulti;
 extern AsyncWebServer server;
 extern JsonDocument doc;

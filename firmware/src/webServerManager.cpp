@@ -1,5 +1,5 @@
 #include "webServerManager.h"
-
+//this file is used to handle the web server by serving the files and handling the requests by the user, such as updating the data.json file with the new data. this file also contains the routes for the web server
 void serverHandle()
 {
     // Additional routes
