@@ -4,10 +4,17 @@
 #include <WiFiUdp.h>
 #include <FastAccelStepper.h>
 #include <Bounce2.h>
+#include <PubSubClient.h>
 
 // WiFi credentials
-const char *ssid = "ratinho_do_malandro";
+const char *ssid = "raccacoonie";
 const char *password = "newgerryforever2018";
+
+// MQTT broker details
+const char *mqtt_server = "192.168.1.11";
+const char *mqtt_user = "homeassistant";
+const char *mqtt_password = "123456";
+const char *mqtt_topic = "stepper/move";
 
 // Define the pins for SDA and SCL
 #define SDA 4
@@ -23,6 +30,8 @@ const char *password = "newgerryforever2018";
 #define STEP_PIN_SCREW 16
 #define ENABLE_PIN_SCREW 18
 
+WiFiClient espClient;
+PubSubClient client(espClient);
 FastAccelStepperEngine engine = FastAccelStepperEngine();
 FastAccelStepper *stepperReservoir = NULL;
 FastAccelStepper *stepperScrew = NULL;
@@ -53,6 +62,61 @@ void performTask();
 void printCurrentTime();
 void initialStepperMovement();
 void connectToWiFi();
+void setup_wifi();
+void callback(char* topic, byte* payload, unsigned int length);
+void reconnect();
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (unsigned int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+
+  // Convert payload to integer
+  int steps = atoi((char*)payload);
+
+  // Move the stepper motor
+  if (stepperReservoir) {
+    stepperReservoir->move(steps);
+  }
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("ESP32Client", mqtt_user, mqtt_password)) {
+      Serial.println("connected");
+      client.subscribe(mqtt_topic);
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
 
 void setup() {
     delay(5000); // Delay to allow the serial monitor to connect
@@ -60,6 +124,9 @@ void setup() {
 
     connectToWiFi();
     timeClient.begin();
+    setup_wifi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
 
     // Set end stop pin
     pinMode(endStopPin, INPUT_PULLUP);
@@ -111,6 +178,11 @@ void loop() {
         printCurrentTime();
         performTask();
     }
+
+    if (!client.connected()) {
+        reconnect();
+    }
+    client.loop();
 }
 
 void calibrateReservoir() {
