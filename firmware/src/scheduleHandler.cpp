@@ -10,8 +10,6 @@ bool isItTime(const char* currentTime, const char* times[], size_t numTimes) {
     return false;
 }
 
-
-
 void checkFeedingSchedule() {
     String data;
     JsonDocument doc;

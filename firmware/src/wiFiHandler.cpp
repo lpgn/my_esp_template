@@ -1,36 +1,31 @@
 #include "wiFiHandler.h"
 // this file is used to handle the wifi connection and the server by connecting to the wifi and setting up the server with the correct settings from the config file an dthe credentials file
+#include "communication.h"
+
 void printAccessPointIP()
 {
-    Serial.println();
-    Serial.println("*****************************************************");
-    Serial.printf("* SoftAP IP is: %s\n\r", WiFi.softAPIP().toString().c_str());
+    printAsciiBox("SoftAP IP is: " + WiFi.softAPIP().toString());
 }
 
 void printConnectedWiFiStatus()
 {
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    printAsciiBox("WiFi connected\nIP address: " + WiFi.localIP().toString());
 }
 
 void printDisconnectedWiFiStatus()
 {
-    Serial.println("WiFi not connected!");
+    printAsciiBox("WiFi not connected!");
 }
 
 void printWiFiScanStatus(int networkCount)
 {
-    Serial.println("WiFi scan complete");
-
     if (networkCount == 0)
     {
-        Serial.println("No WiFi networks found.");
+        printAsciiBox("No WiFi networks found.");
     }
     else
     {
-        Serial.printf("Found %d WiFi networks:\n", networkCount);
+        printAsciiBox("Found " + String(networkCount) + " WiFi networks:");
     }
 }
 
@@ -38,42 +33,37 @@ void printDiscoveredWiFiNetworks(int networkCount)
 {
     for (int i = 0; i < networkCount; i++)
     {
-        Serial.printf("%d: ", i + 1);
-        Serial.print(WiFi.SSID(i));
-        Serial.print(" (");
-        Serial.print(WiFi.RSSI(i));
-        Serial.print(" dBm");
-
+        String message = String(i + 1) + ": " + WiFi.SSID(i) + " (" + WiFi.RSSI(i) + " dBm";
         if (WiFi.encryptionType(i) == WIFI_AUTH_OPEN)
         {
-            Serial.print(", open");
+            message += ", open";
         }
         else
         {
-            Serial.print(", encrypted");
+            message += ", encrypted";
         }
-
-        Serial.println();
+        message += ")";
+        printAsciiBox(message);
     }
 }
 
 void initiateWiFiConnection()
 {
-    Serial.println("Connecting Wifi...");
+    printAsciiBox("Connecting Wifi...");
     if (wifiMulti.run() == WL_CONNECTED)
     {
         printConnectedWiFiStatus();
     }
     else
     {
-        Serial.println("WiFi connection failed.");
+        printAsciiBox("WiFi connection failed.");
     }
     WiFi.setTxPower(WIFI_POWER_19_5dBm);
 }
 
 void handleWiFiConnection()
 {
-    static unsigned long previousTime = 0; // Declare as a static variable
+    static unsigned long previousTime = 0;
     const unsigned long eventInterval = 10000;
     const uint32_t connectTimeoutMs = 10000;
 
@@ -83,33 +73,27 @@ void handleWiFiConnection()
     {
         if (wifiMulti.run(connectTimeoutMs) == WL_CONNECTED)
         {
-            Serial.print("WiFi connected: ");
-            Serial.print(WiFi.SSID());
-            Serial.print(" ");
-            Serial.println(WiFi.RSSI());
+            printAsciiBox("WiFi connected: " + WiFi.SSID());
         }
         else
         {
-            printDisconnectedWiFiStatus();
+            printAsciiBox("WiFi connection failed.");
         }
-
         previousTime = currentTime;
     }
 }
 
 void scanAvailableWiFiNetworks()
 {
+    printAsciiBox("Scanning for WiFi networks...");
     int networkCount = WiFi.scanNetworks();
     printWiFiScanStatus(networkCount);
-    if (networkCount > 0)
-    {
-        printDiscoveredWiFiNetworks(networkCount);
-    }
+    printDiscoveredWiFiNetworks(networkCount);
 }
 
 void loadCredentialsFromFile()
 {
-    Serial.println("Reading credentials file...");
+    printAsciiBox("Reading credentials file...");
     String credentialsData = readFile("/credentials.txt");
     for (int pos = 0, foundAt = 0; foundAt != -1; pos = foundAt + 1)
     {
@@ -121,7 +105,7 @@ void loadCredentialsFromFile()
             String ssid = line.substring(0, separatorIndex);
             String password = line.substring(separatorIndex + 1);
             wifiMulti.addAP(ssid.c_str(), password.c_str());
-            Serial.printf("Loaded credential - SSID: %s, Password: %s\n", ssid.c_str(), password.c_str());
+            printAsciiBox("Loaded credential - SSID: " + ssid + ", Password: " + password);
         }
     }
 }
@@ -135,7 +119,7 @@ void configureWiFiSettings()
 }
 
 void initializeServer()
- {
-     ElegantOTA.begin(&server);
-     server.begin();
- }
+{
+    ElegantOTA.begin(&server);
+    server.begin();
+}

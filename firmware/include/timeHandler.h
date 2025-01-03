@@ -2,12 +2,10 @@
 #define TIME_HANDLER_H
 
 #include "config.h"
-
-void printCompilationTimestamp();
-void printRtcDateTime(const RtcDateTime &dt);
+void formatDateTime(const RtcDateTime &dt, char* buffer, size_t size);
 void syncInternalRtcWithExternal(const RtcDateTime &dt);
 void initializeRtc();
-void printRtcDateTimeInLoop();
-bool getCurrentTime(char* currentTime, size_t currentTimeSize);
+void printCompileTime();
+bool getCurrentTime(char *currentTime, size_t size);
 
 #endif // WIFIHANDLER_H

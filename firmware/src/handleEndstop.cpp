@@ -5,28 +5,3 @@ void setupEndstopInterrupt(int pin) {
     endstopDebouncer.attach(pin);
     endstopDebouncer.interval(50); // Set debounce interval to 50ms
 }
-
-void updateEndstopState() {
-    endstopDebouncer.update();
-    if (endstopDebouncer.fell()) {
-        endstopHit = true;
-    } else if (endstopDebouncer.rose()) {
-        endstopReleased = true;
-    }
-}
-
-bool checkEndstopHit() {
-    if (endstopHit) {
-        endstopHit = false;
-        return true;
-    }
-    return false;
-}
-
-bool checkEndstopReleased() {
-    if (endstopReleased) {
-        endstopReleased = false;
-        return true;
-    }
-    return false;
-}
