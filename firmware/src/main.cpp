@@ -53,6 +53,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   // Convert payload to integer
   int steps = atoi((char*)payload);
+  Serial.print("Steps to move: ");
+  Serial.println(steps);
 
   // Move the stepper motor
   if (stepper) {
@@ -64,6 +66,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
       // Waiting for the stepper to finish the move
     }
     Serial.println("Stepper movement complete.");
+  } else {
+    Serial.println("Stepper motor not initialized.");
   }
 }
 
@@ -97,7 +101,11 @@ void setup() {
     stepper->setDirectionPin(DIR_PIN);
     stepper->setEnablePin(ENABLE_PIN);
     stepper->setAutoEnable(true);
+    stepper->setSpeedInHz(1000); // Set a default speed
+    stepper->setAcceleration(100); // Set a default acceleration
     Serial.println("Stepper motor initialized.");
+  } else {
+    Serial.println("Failed to initialize stepper motor.");
   }
 }
 
