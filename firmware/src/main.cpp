@@ -1,5 +1,18 @@
 #include <Arduino.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
 #include <FastAccelStepper.h>
+
+// WiFi credentials
+const char *ssid = "your_ssid";
+const char *password = "your_password";
+
+// MQTT broker details
+const char *mqtt_server = "192.168.1.11";
+const char *mqtt_user = "homeassistant";
+const char *mqtt_password = "123456";
+const char *mqtt_topic_move1 = "stepper/move1";
+const char *mqtt_topic_status = "stepper/status";
 
 // Stepper Motor 1
 #define DIR_PIN_1 8
@@ -14,15 +27,92 @@
 // End Stop
 #define END_STOP_PIN 42
 
+WiFiClient espClient;
+PubSubClient client(espClient);
 FastAccelStepperEngine engine = FastAccelStepperEngine();
 FastAccelStepper *stepper1 = NULL;
 FastAccelStepper *stepper2 = NULL;
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (unsigned int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+
+  if (strcmp(topic, mqtt_topic_move1) == 0) {
+    // Convert payload to integer
+    int command = atoi((char*)payload);
+    Serial.print("Command received: ");
+    Serial.println(command);
+
+    if (command == 1) {
+      // Move stepper 1
+      if (stepper1) {
+        Serial.println("Moving stepper motor 1...");
+        stepper1->move(10000); // Move a large number of steps to ensure it reaches the end stop
+        while (stepper1->isRunning()) {
+          if (digitalRead(END_STOP_PIN) == LOW) {
+            stepper1->forceStop(); // Stop the motor if the end stop is pressed
+            Serial.println("End stop pressed. Stepper motor 1 stopped.");
+            client.publish(mqtt_topic_status, "Stepper motor 1 stopped due to end stop.");
+            break;
+          }
+        }
+        Serial.println("Stepper motor 1 movement complete.");
+      } else {
+        Serial.println("Stepper motor 1 not initialized.");
+      }
+    }
+  }
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("ESP32Client", mqtt_user, mqtt_password)) {
+      Serial.println("connected");
+      client.subscribe(mqtt_topic_move1);
+      Serial.println("Subscribed to MQTT topic.");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
 
 void setup() {
   Serial.begin(115200); // Initialize serial monitor with fast speed
   Serial.println("Serial monitor started.");
 
   pinMode(END_STOP_PIN, INPUT_PULLUP); // Initialize end stop pin
+
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
 
   engine.init();
   
@@ -54,6 +144,11 @@ void setup() {
 }
 
 void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
   if (stepper1 && stepper2) {
     Serial.println("Moving stepper motors to the right...");
     stepper1->move(200); // Move 200 steps to the right
