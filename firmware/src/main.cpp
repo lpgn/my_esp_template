@@ -12,7 +12,8 @@ const char *mqtt_server = "192.168.1.11";
 const char *mqtt_user = "homeassistant";
 const char *mqtt_password = "123456";
 const char *mqtt_topic_move1 = "stepper/move1";
-const char *mqtt_topic_status = "stepper/status";
+const char *mqtt_topic_move2 = "stepper/move2";
+const char *mqtt_topic_endstop = "endstop/status";
 
 // Stepper Motor 1
 #define DIR_PIN_1 8
@@ -32,6 +33,11 @@ PubSubClient client(espClient);
 FastAccelStepperEngine engine = FastAccelStepperEngine();
 FastAccelStepper *stepper1 = NULL;
 FastAccelStepper *stepper2 = NULL;
+
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 50;
+bool endStopState = HIGH;
+bool lastEndStopState = HIGH;
 
 void setup_wifi() {
   delay(10);
@@ -61,29 +67,27 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  if (strcmp(topic, mqtt_topic_move1) == 0) {
-    // Convert payload to integer
-    int command = atoi((char*)payload);
-    Serial.print("Command received: ");
-    Serial.println(command);
+  int steps = atoi((char*)payload);
 
-    if (command == 1) {
-      // Move stepper 1
-      if (stepper1) {
-        Serial.println("Moving stepper motor 1...");
-        stepper1->move(10000); // Move a large number of steps to ensure it reaches the end stop
-        while (stepper1->isRunning()) {
-          if (digitalRead(END_STOP_PIN) == LOW) {
-            stepper1->forceStop(); // Stop the motor if the end stop is pressed
-            Serial.println("End stop pressed. Stepper motor 1 stopped.");
-            client.publish(mqtt_topic_status, "Stepper motor 1 stopped due to end stop.");
-            break;
-          }
-        }
-        Serial.println("Stepper motor 1 movement complete.");
-      } else {
-        Serial.println("Stepper motor 1 not initialized.");
-      }
+  if (strcmp(topic, mqtt_topic_move1) == 0) {
+    // Move stepper 1
+    if (stepper1) {
+      Serial.print("Moving stepper motor 1 by ");
+      Serial.print(steps);
+      Serial.println(" steps...");
+      stepper1->move(steps);
+    } else {
+      Serial.println("Stepper motor 1 not initialized.");
+    }
+  } else if (strcmp(topic, mqtt_topic_move2) == 0) {
+    // Move stepper 2
+    if (stepper2) {
+      Serial.print("Moving stepper motor 2 by ");
+      Serial.print(steps);
+      Serial.println(" steps...");
+      stepper2->move(steps);
+    } else {
+      Serial.println("Stepper motor 2 not initialized.");
     }
   }
 }
@@ -94,7 +98,8 @@ void reconnect() {
     if (client.connect("ESP32Client", mqtt_user, mqtt_password)) {
       Serial.println("connected");
       client.subscribe(mqtt_topic_move1);
-      Serial.println("Subscribed to MQTT topic.");
+      client.subscribe(mqtt_topic_move2);
+      Serial.println("Subscribed to MQTT topics.");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -149,21 +154,23 @@ void loop() {
   }
   client.loop();
 
-  if (stepper2) {
-    if (!stepper2->isRunning()) {
-      Serial.println("Moving stepper motor 2 to the right...");
-      stepper2->move(200); // Move 200 steps to the right
-      while (stepper2->isRunning()) {
-        // Waiting for the stepper to finish the move
-      }
-      Serial.println("Stepper motor 2 movement to the right complete.");
+  // Check end stop status
+  int reading = digitalRead(END_STOP_PIN);
+  if (reading != lastEndStopState) {
+    lastDebounceTime = millis();
+  }
 
-      Serial.println("Moving stepper motor 2 to the left...");
-      stepper2->move(-200); // Move 200 steps to the left
-      while (stepper2->isRunning()) {
-        // Waiting for the stepper to finish the move
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != endStopState) {
+      endStopState = reading;
+      if (endStopState == LOW) {
+        Serial.println("End stop pressed.");
+        client.publish(mqtt_topic_endstop, "1");
+      } else {
+        Serial.println("End stop released.");
+        client.publish(mqtt_topic_endstop, "0");
       }
-      Serial.println("Stepper motor 2 movement to the left complete.");
     }
   }
+  lastEndStopState = reading;
 }
