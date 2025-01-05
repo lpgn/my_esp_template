@@ -149,48 +149,21 @@ void loop() {
   }
   client.loop();
 
-  if (stepper1 && stepper2) {
-    Serial.println("Moving stepper motors to the right...");
-    stepper1->move(200); // Move 200 steps to the right
-    stepper2->move(200); // Move 200 steps to the right
-    while (stepper1->isRunning() || stepper2->isRunning()) {
-      // Waiting for the steppers to finish the move
-    }
-    Serial.println("Stepper motors movement to the right complete.");
-
-    delay(1000); // Wait for 1 second
-
-    Serial.println("Moving stepper motors to the left...");
-    stepper1->move(-200); // Move 200 steps to the left
-    stepper2->move(-200); // Move 200 steps to the left
-    while (stepper1->isRunning() || stepper2->isRunning()) {
-      // Waiting for the steppers to finish the move
-    }
-    Serial.println("Stepper motors movement to the left complete.");
-
-    delay(1000); // Wait for 1 second
-
-    // Move stepper 2 until the end stop is pressed
-    Serial.println("Moving stepper motor 2 until end stop is pressed...");
-    stepper2->move(10000); // Move a large number of steps to ensure it reaches the end stop
-    while (stepper2->isRunning()) {
-      if (digitalRead(END_STOP_PIN) == LOW) {
-        stepper2->forceStop(); // Stop the motor if the end stop is pressed
-        Serial.println("End stop pressed. Stepper motor 2 stopped.");
-        break;
+  if (stepper2) {
+    if (!stepper2->isRunning()) {
+      Serial.println("Moving stepper motor 2 to the right...");
+      stepper2->move(200); // Move 200 steps to the right
+      while (stepper2->isRunning()) {
+        // Waiting for the stepper to finish the move
       }
+      Serial.println("Stepper motor 2 movement to the right complete.");
+
+      Serial.println("Moving stepper motor 2 to the left...");
+      stepper2->move(-200); // Move 200 steps to the left
+      while (stepper2->isRunning()) {
+        // Waiting for the stepper to finish the move
+      }
+      Serial.println("Stepper motor 2 movement to the left complete.");
     }
-
-    // Disable the stepper motors
-    stepper1->disableOutputs();
-    stepper2->disableOutputs();
-    Serial.println("Stepper motors disabled.");
-
-    delay(5000); // Pause for 5 seconds
-
-    // Enable the stepper motors
-    stepper1->enableOutputs();
-    stepper2->enableOutputs();
-    Serial.println("Stepper motors enabled.");
   }
 }
