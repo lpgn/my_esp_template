@@ -4,8 +4,8 @@
 #include <FastAccelStepper.h>
 
 // WiFi credentials
-const char *ssid = "your_ssid";
-const char *password = "your_password";
+const char *ssid = "raccacoonie";
+const char *password = "newgerryforever2018";
 
 // MQTT broker details
 const char *mqtt_server = "192.168.1.11";
