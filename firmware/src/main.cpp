@@ -4,8 +4,8 @@
 #include <FastAccelStepper.h>
 
 // WiFi credentials
-const char *ssid = "raccacoonie";
-const char *password = "newgerryforever2018";
+const char *ssid = "MPR18-2.4G";
+const char *password = "missionconnected";
 
 // MQTT broker details
 const char *mqtt_server = "192.168.1.11";
@@ -16,14 +16,14 @@ const char *mqtt_topic_move2 = "stepper/move2";
 const char *mqtt_topic_endstop = "endstop/status";
 
 // Stepper Motor 1
-#define DIR_PIN_1 8
-#define STEP_PIN_1 3
-#define ENABLE_PIN_1 46
+#define DIR_PIN_1 3
+#define STEP_PIN_1 2
+#define ENABLE_PIN_1 4
 
 // Stepper Motor 2
-#define DIR_PIN_2 17
-#define STEP_PIN_2 16
-#define ENABLE_PIN_2 18
+#define DIR_PIN_2 6
+#define STEP_PIN_2 5
+#define ENABLE_PIN_2 7
 
 // End Stop
 #define END_STOP_PIN 42
@@ -38,6 +38,7 @@ unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 50;
 bool endStopState = HIGH;
 bool lastEndStopState = HIGH;
+bool motorsRunning = false;
 
 void setup_wifi() {
   delay(10);
@@ -59,35 +60,29 @@ void setup_wifi() {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
+  String message;
+  for (unsigned int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  for (unsigned int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+  Serial.println(message);
 
-  int steps = atoi((char*)payload);
-
-  if (strcmp(topic, mqtt_topic_move1) == 0) {
-    // Move stepper 1
-    if (stepper1) {
-      Serial.print("Moving stepper motor 1 by ");
-      Serial.print(steps);
-      Serial.println(" steps...");
-      stepper1->move(steps);
-    } else {
-      Serial.println("Stepper motor 1 not initialized.");
-    }
-  } else if (strcmp(topic, mqtt_topic_move2) == 0) {
-    // Move stepper 2
-    if (stepper2) {
-      Serial.print("Moving stepper motor 2 by ");
-      Serial.print(steps);
-      Serial.println(" steps...");
-      stepper2->move(steps);
-    } else {
-      Serial.println("Stepper motor 2 not initialized.");
+  if (String(topic) == mqtt_topic_move1) {
+    int command = message.toInt();
+    if (command == 1) {
+      motorsRunning = true;
+      Serial.println("Motors started");
+    } else if (command == 0) {
+      motorsRunning = false;
+      if (stepper1) {
+        stepper1->stopMove();
+      }
+      if (stepper2) {
+        stepper2->stopMove();
+      }
+      Serial.println("Motors stopped");
     }
   }
 }
@@ -173,4 +168,13 @@ void loop() {
     }
   }
   lastEndStopState = reading;
+
+  if (motorsRunning) {
+    if (stepper1) {
+      stepper1->move(100); // Move stepper1 continuously
+    }
+    if (stepper2) {
+      stepper2->move(100); // Move stepper2 continuously
+    }
+  }
 }
